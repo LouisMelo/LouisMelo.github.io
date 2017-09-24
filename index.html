@@ -48,9 +48,9 @@
       </nav>
       <nav id="sub-nav">
         
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="Flux RSS"></a>
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Rechercher"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -110,17 +110,17 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>);</div><div class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> Koa();</div><div class="line"></div><div class="line">app.use(<span class="keyword">async</span> (ctx, next)=&gt;&#123;</div><div class="line">  <span class="keyword">await</span> next();</div><div class="line">  ctx.response.type = <span class="string">'text/html'</span>;</div><div class="line">  ctx.response.body = <span class="string">'&lt;h1&gt;Hello, koa2!&lt;/h1&gt;'</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">app.listen(<span class="number">3000</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'app started at port 3000...'</span>);</div></pre></td></tr></table></figure>
 <p>这里有几个与以往不同的关键词值得关注:</p>
 <ul>
-<li>ctx: 这个其实是context(上下文)的简写，用来存放request和response对象的</li>
-<li>next: 这是koa传入的将要处理的下一个异步函数，这个是由koa控制的</li>
-<li>await: ES7的关键字，这里await next()表示先处理下一个异步函数，然后再干点别的</li>
-<li>async: 也是ES7的关键字，</li>
+<li><strong>ctx</strong>: 这个其实是context(上下文)的简写，用来存放request和response对象的</li>
+<li><strong>next</strong>: 这是koa传入的将要处理的下一个异步函数，这个是由koa控制的</li>
+<li><strong>await</strong>: ES7的关键字，这里await next()表示先处理下一个异步函数，然后再干点别的</li>
+<li><strong>async</strong>: 也是ES7的关键字，</li>
 </ul>
 <p><strong>async是用来将函数标记为异步函数的，而await是用来调用一个异步函数的。</strong></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj7ywkpq40000agseb1hp53bx" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj7zdxcjc0000jwselv77iujj" class="article-share-link">Share</a>
       
       
     </footer>
@@ -163,7 +163,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/第一篇hexo日记/" data-id="cj7ywkpqc0002agsessmpkriw" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/09/24/第一篇hexo日记/" data-id="cj7zdxcjl0002jwseg7w0636r" class="article-share-link">Share</a>
       
       
     </footer>
@@ -208,7 +208,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/hello-world/" data-id="cj7ywkpq90001agsera1lypi9" class="article-share-link">Partager</a>
+      <a data-url="http://yoursite.com/2017/09/24/hello-world/" data-id="cj7zdxcji0001jwseowtrl2gv" class="article-share-link">Share</a>
       
       
     </footer>
@@ -243,7 +243,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Articles récents</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -272,7 +272,7 @@
   <div class="outer">
     <div id="footer-info" class="inner">
       &copy; 2017 John Doe<br>
-      Propulsé by <a href="http://hexo.io/" target="_blank">Hexo</a>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
