@@ -116,11 +116,23 @@
 <li><strong>async</strong>: 也是ES7的关键字，</li>
 </ul>
 <p><strong>async是用来将函数标记为异步函数的，而await是用来调用一个异步函数的。</strong></p>
+<p>Q: await next()的作用是?<br>A: koa把很多async函数组成一个任务链，每个async函数都可以做一些自己的事情，然后用await next()来调用下一个async函数。<strong>我们把每个async函数成为middleware</strong>，通过middleware的组合，我们可以完成很多有用的功能。</p>
+<p>PS: middleware的顺序十分重要，调用app.use()的顺序决定了middleware的顺序。</p>
+<p>Q: app.use()的用法是?<br>A: app.use()加载用于处理http请求的中间件(middleware)，当一个请求来的时候，会依次被这些middlewares处理，而处理的顺序就是定义的顺序。官方的文档中有一句话是这样说的:</p>
+<blockquote>
+<p>Since path defaults to “/”, middleware mounted without a path will be executed for every request to the app.<br>由于路径默认为“/”，没有加载路径的中间件会在app每次被请求的时候执行。</p>
+</blockquote>
+<p>据说理解了middleware，我们就会用koa了!(really?)</p>
+<p>ctx还有一些简写的方法:</p>
+<ul>
+<li>ctx.url = ctx.request.url</li>
+<li>ctx.type = ctx.response.type</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj7zdxcjc0000jwselv77iujj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj806267d0000yzseyz0cixq6" class="article-share-link">Share</a>
       
       
     </footer>
@@ -163,7 +175,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/第一篇hexo日记/" data-id="cj7zdxcjl0002jwseg7w0636r" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/24/第一篇hexo日记/" data-id="cj806267l0002yzseb50zb00c" class="article-share-link">Share</a>
       
       
     </footer>
@@ -208,7 +220,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/hello-world/" data-id="cj7zdxcji0001jwseowtrl2gv" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/24/hello-world/" data-id="cj806267i0001yzserh73uage" class="article-share-link">Share</a>
       
       
     </footer>

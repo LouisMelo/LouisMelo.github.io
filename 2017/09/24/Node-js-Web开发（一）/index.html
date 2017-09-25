@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="C/S架构是早期的软件架构，其特征是客户端运行在PC上，数据库运行在服务器上。但是随着互联网点兴起，人们发现C/S架构并不适合Web应用，因为Web应用的更新速度很快，迭代周期很短，而CS架构要求每次迭代都更新客户端，这太麻烦了，于是就有了B/S架构。 Web开发经历的阶段:  静态Web页面 CGI(Common Gateway Interface，用C/C++编写的) ASP/JSP/PHP(">
-<meta property="og:updated_time" content="2017-09-24T23:33:10.000Z">
+<meta property="og:updated_time" content="2017-09-25T12:41:50.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Node.js Web开发（一）">
 <meta name="twitter:description" content="C/S架构是早期的软件架构，其特征是客户端运行在PC上，数据库运行在服务器上。但是随着互联网点兴起，人们发现C/S架构并不适合Web应用，因为Web应用的更新速度很快，迭代周期很短，而CS架构要求每次迭代都更新客户端，这太麻烦了，于是就有了B/S架构。 Web开发经历的阶段:  静态Web页面 CGI(Common Gateway Interface，用C/C++编写的) ASP/JSP/PHP(">
@@ -118,11 +118,23 @@
 <li><strong>async</strong>: 也是ES7的关键字，</li>
 </ul>
 <p><strong>async是用来将函数标记为异步函数的，而await是用来调用一个异步函数的。</strong></p>
+<p>Q: await next()的作用是?<br>A: koa把很多async函数组成一个任务链，每个async函数都可以做一些自己的事情，然后用await next()来调用下一个async函数。<strong>我们把每个async函数成为middleware</strong>，通过middleware的组合，我们可以完成很多有用的功能。</p>
+<p>PS: middleware的顺序十分重要，调用app.use()的顺序决定了middleware的顺序。</p>
+<p>Q: app.use()的用法是?<br>A: app.use()加载用于处理http请求的中间件(middleware)，当一个请求来的时候，会依次被这些middlewares处理，而处理的顺序就是定义的顺序。官方的文档中有一句话是这样说的:</p>
+<blockquote>
+<p>Since path defaults to “/”, middleware mounted without a path will be executed for every request to the app.<br>由于路径默认为“/”，没有加载路径的中间件会在app每次被请求的时候执行。</p>
+</blockquote>
+<p>据说理解了middleware，我们就会用koa了!(really?)</p>
+<p>ctx还有一些简写的方法:</p>
+<ul>
+<li>ctx.url = ctx.request.url</li>
+<li>ctx.type = ctx.response.type</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj7zdxcjc0000jwselv77iujj" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2017/09/24/Node-js-Web开发（一）/" data-id="cj806267d0000yzseyz0cixq6" class="article-share-link">Share</a>
       
       
     </footer>
