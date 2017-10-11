@@ -76,10 +76,14 @@
 <meta property="og:site_name" content="Louis">
 <meta property="og:description" content="由于项目的需要，我将学习如何在一台空的Ubuntu机器上，配置Node.js + MongoDB的生产环境，这里是整个的搭建配置流程，使用了DigitalOcean作为VPS，搭建了一个远程的环境，用来部署Node.js App。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-10-11T08:24:45.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1507714718/ss1_oebjdb.png">
+<meta property="og:image" content="https://res.cloudinary.com/louismelo/image/upload/v1507715115/ss2_p9agbg.png">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1507715049/ss3_khxzzw.png">
+<meta property="og:updated_time" content="2017-10-11T09:50:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用DigitalOcean部署Node.js App">
 <meta name="twitter:description" content="由于项目的需要，我将学习如何在一台空的Ubuntu机器上，配置Node.js + MongoDB的生产环境，这里是整个的搭建配置流程，使用了DigitalOcean作为VPS，搭建了一个远程的环境，用来部署Node.js App。">
+<meta name="twitter:image" content="http://res.cloudinary.com/louismelo/image/upload/v1507714718/ss1_oebjdb.png">
 
 
 
@@ -326,10 +330,14 @@
 <h2 id="搭建并配置VPS"><a href="#搭建并配置VPS" class="headerlink" title="搭建并配置VPS"></a>搭建并配置VPS</h2><p>在我们开始一切之前，我们首先需要一个可以访问的服务器。有许多的VPS可以供我们选择，例如AWS，阿里云，DigitalOcean等等，所以不必拘泥于DigitalOcean。不过，为了方便起见，建议根据教程一起，使用DigitalOcean来搭建服务器，因为它真的挺不错的。</p>
 <p>如果你还没有DigitalOcean的账户，那么你可以点击下面这个链接，可以免费获得10美元，足够让你用两个月，还挺不错的吧。</p>
 <h3 id="1-在DigitalOcean上创建一个新的Droplet"><a href="#1-在DigitalOcean上创建一个新的Droplet" class="headerlink" title="1.在DigitalOcean上创建一个新的Droplet"></a>1.在DigitalOcean上创建一个新的Droplet</h3><p>在创建好账户，并登陆之后，你可以看到如下的界面，点击”Create Droplet”的按钮。</p>
-<p>选择Ubuntu 16.04.3 x64 -&gt; 选择最便宜的每月5美元的型号 -&gt; 选择服务器的所在区域（我选了新加坡，因为感觉离得比较近吧） -&gt; 添加SSH Key<br>这里，我是用的是Mac OS，所以可以打开terminal，输入如下命令查看是否已经存在SSH key:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -la ~/.ssh</div></pre></td></tr></table></figure></p>
+<p><img src="http://res.cloudinary.com/louismelo/image/upload/v1507714718/ss1_oebjdb.png" alt="创建Droplet"></p>
+<p>选择Ubuntu 16.04.3 x64 -&gt; 选择最便宜的每月5美元的型号 -&gt; 选择服务器的所在区域（我选了新加坡，因为感觉离得比较近吧） -&gt; 添加SSH Key</p>
+<p><img src="https://res.cloudinary.com/louismelo/image/upload/v1507715115/ss2_p9agbg.png" alt="选择Droplet种类"></p>
+<p>这里，我是用的是Mac OS，所以可以打开terminal，输入如下命令查看是否已经存在SSH key:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ls -la ~/.ssh</div></pre></td></tr></table></figure></p>
 <p>当返回的列表中，有存在名为 <strong>id_rsa.pub</strong> 的文件时，说明系统中已经生成了SSH key，只需要复制就可以了，复制的命令为:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># This copies the key in the clipboard, so you can paste with Command + V.</div><div class="line">pbcopy &lt; ~/.ssh/id_rsa.pub</div></pre></td></tr></table></figure></p>
 <p>点击”New SSH Key”的按钮，将SSH Key粘贴进去，随便起一个名字，比如Louis’s MBP，然后保存。<br>在下面，为你的Droplet起一个名字，最后点击”Create”按钮创建它。</p>
 <p>创建成功后，页面会跳转到Droplet列表页面，在新的Droplet上会显示它的IP地址，点击复制它。</p>
+<p><img src="http://res.cloudinary.com/louismelo/image/upload/v1507715049/ss3_khxzzw.png" alt="复制ip地址"></p>
 <p>打开terminal，输入如下命令，来连接到你的Droplet上:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># 确保用你的IP地址，替换下面的128.199.175.122</div><div class="line">ssh root@128.199.175.122</div></pre></td></tr></table></figure></p>
 <h3 id="2-对服务器进行基础的安全设置"><a href="#2-对服务器进行基础的安全设置" class="headerlink" title="2.对服务器进行基础的安全设置"></a>2.对服务器进行基础的安全设置</h3><p>当我们登录到服务器之后，我们需要对服务器做一些基础的配置，来确保它的安全性。</p>
 <p>首先，我们要创建一个拥有 <strong>sudo</strong> 权限的新用户，在terminal中输入如下命令:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">adduser louis</div></pre></td></tr></table></figure></p>
@@ -721,6 +729,6 @@
 
   
 
-  <script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script>
+  <!-- <script type="text/javascript" color="0,0,255" opacity='0.7' zIndex="-2" count="99" src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js"></script> -->
 </body>
 </html>
