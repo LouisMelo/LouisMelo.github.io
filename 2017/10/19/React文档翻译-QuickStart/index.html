@@ -356,7 +356,7 @@
 <h3 id="激活ES6以及JSX"><a href="#激活ES6以及JSX" class="headerlink" title="激活ES6以及JSX"></a>激活ES6以及JSX</h3><p>我们推荐结合Babel使用React，这使得你可以在Javascript代码中使用ES6以及JSX。ES6是一套新的Javascript标准，它使得开发更加简洁。JSX是Javascript一个扩展，它可以与React配合的非常完美。</p>
 <p><a href="https://babeljs.io/docs/setup/" target="_blank" rel="external">Babel安装说明</a>解释了如何在不同的构建环境中配置Babel，你需要确保你安装了<a href="http://babeljs.io/docs/plugins/preset-react/#basic-setup-with-the-cli-" target="_blank" rel="external">babel-preset-react</a>以及<a href="http://babeljs.io/docs/plugins/preset-env/" target="_blank" rel="external">babel-preset-env</a>，并且在你的<a href="http://babeljs.io/docs/usage/babelrc/" target="_blank" rel="external">.babelrc配置文件</a>中激活了它们，这样你就可以继续了。</p>
 <h3 id="使用ES6和JSX的Hello-World"><a href="#使用ES6和JSX的Hello-World" class="headerlink" title="使用ES6和JSX的Hello World"></a>使用ES6和JSX的Hello World</h3><p>我们推荐你使用webpack或者Browserify，这样你可以写出模块化的代码，并且将它们整合到一个个小的包中去，来优化载入时间。</p>
-<p>最简单的React例子就像这样:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!&lt;/h1&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>最简单的React例子就像这样:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
 <p>这段代码渲染了一个id为<code>root</code>的DOM元素，所以你需要在你的HTML文件某处添加这样的一行代码: <code>&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</code>。</p>
 <p>相似地，你也可以使用React渲染你使用其他Javascript UI库写的现有App中的DOM元素。</p>
 <h3 id="开发版本与生产版本"><a href="#开发版本与生产版本" class="headerlink" title="开发版本与生产版本"></a>开发版本与生产版本</h3><p>默认情况下，React包含了许多有用的警告。这些警告在开发过程中十分有用。</p>
@@ -553,7 +553,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
