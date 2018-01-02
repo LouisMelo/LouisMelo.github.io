@@ -77,7 +77,7 @@
 <meta property="og:description" content="HTML、CSS基础教程 任务目的 掌握HTML、CSS基础知识、能够熟练运用HTML、CSS编写页面Start 1. 建立你的第一个网页 1.1 期望达成 了解什么是Web: Web 2.0是一种新的互联网方式，通过网络应用（Web Applications）促进网络上人与人间的信息交换和协同合作，其模式更加以用户为中心。典型的Web 2.0站点有：网络社区、网络应用程序、社交网站、博客、Wik">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1508936703/css_rendering.png">
-<meta property="og:updated_time" content="2017-10-25T15:57:13.000Z">
+<meta property="og:updated_time" content="2017-11-07T06:56:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IFE前端 - Task0001">
 <meta name="twitter:description" content="HTML、CSS基础教程 任务目的 掌握HTML、CSS基础知识、能够熟练运用HTML、CSS编写页面Start 1. 建立你的第一个网页 1.1 期望达成 了解什么是Web: Web 2.0是一种新的互联网方式，通过网络应用（Web Applications）促进网络上人与人间的信息交换和协同合作，其模式更加以用户为中心。典型的Web 2.0站点有：网络社区、网络应用程序、社交网站、博客、Wik">
@@ -387,7 +387,7 @@
 <li><code>word-spacing</code>: <strong>The letter-spacing and word-spacing properties allow you to set the spacing between letters and words in your text.对于中文而言，每个字之间的间距是由<code>letter-spacing</code>决定的</strong></li>
 <li><code>color</code>: <strong>The color property sets the color of the foreground content of the selected elements (which is usually the text, but can also include a couple of other things, such as an underline or overline placed on text using the text-decoration property).</strong></li>
 <li><code>white-space</code>: <strong>Define how whitespace and associated line breaks inside the element are handled.</strong></li>
-<li><code>font</code>:</li>
+<li><code>font</code>: </li>
 <li><code>font-family</code>:</li>
 <li><code>font-size</code>:</li>
 <li><code>font-weight</code>:</li>
@@ -395,12 +395,51 @@
 </ul>
 <h2 id="6-盒模型及定位"><a href="#6-盒模型及定位" class="headerlink" title="6. 盒模型及定位"></a>6. 盒模型及定位</h2><hr>
 <h3 id="6-1-期望达成"><a href="#6-1-期望达成" class="headerlink" title="6.1 期望达成"></a>6.1 期望达成</h3><ul>
-<li>掌握块状元素、内联元素、和内联块元素的概念与区别</li>
-<li>掌握盒模型的所有概念，学会如何计算各种盒模型相关的数值</li>
-<li>掌握<code>position</code>的相关知识</li>
-<li>掌握<code>float</code>的相关知识</li>
-<li>掌握基本的布局方式</li>
-<li>了解<code>Grid</code>、<code>Flexbox</code>等布局方式</li>
+<li>掌握块状元素、内联元素、和内联块元素的概念与区别<ul>
+<li>块状（block）元素: <code>&lt;div&gt;</code>、<code>&lt;p&gt;</code>、<code>&lt;h1&gt;</code>、<code>&lt;form&gt;</code>、<code>&lt;ul&gt;</code>、<code>&lt;li&gt;</code> <ol>
+<li>每个块级元素都从新的一行开始，并且其后的元素也另起一行。（真霸道，一个块级元素独占一行）</li>
+<li>元素的高度、宽度、行高以及顶和底边距都可以设置。</li>
+<li>元素宽度在不设定的情况下，是它父容器的100%（和父级元素的宽度一致），除非设定一个宽度。</li>
+</ol>
+</li>
+<li>内联（inline）元素: <code>&lt;span&gt;</code>、<code>&lt;a&gt;</code>、<code>&lt;label&gt;</code>、<code>&lt;strong&gt;</code>、<code>&lt;em&gt;</code><ol>
+<li>和其他元素都在一行上。</li>
+<li>元素的高度、宽度及顶部和底部边距<code>不可</code>设置。</li>
+<li>元素的宽度就是它包含的文字或图片的宽度，<code>不可</code>改变.</li>
+</ol>
+</li>
+<li>内联块元素: <code>&lt;img&gt;</code>、<code>&lt;input&gt;</code><ol>
+<li>和其他元素都在一行上</li>
+<li>元素的高度、宽度、行高以及顶和底边距都可以设置。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>掌握盒模型的所有概念，学会如何计算各种盒模型相关的数值: <code>content</code>、<code>padding</code>、<code>margin</code></li>
+<li>掌握<code>position</code>的相关知识<ul>
+<li>流动模型(flow): 默认的网页布局模式<ol>
+<li>块状元素都会在所处的包含元素内自上而下按顺序垂直延伸分布</li>
+<li>内联元素都会在所处的包含元素内从左到右水平分布显示</li>
+</ol>
+</li>
+<li>浮动模型(float): 让块状元素并排显示</li>
+<li>层模型(layer): 像是图像软件PhotoShop中非常流行的图层编辑功能一样<ol>
+<li>绝对定位: <code>position: absolute</code> 这条语句的作用将元素从文档流中拖出来，然后使用left、right、top、bottom属性相对于其最接近的一个具有定位属性的父包含块进行绝对定位。</li>
+<li>相对定位: <code>position: relative</code> 它通过left、right、top、bottom属性确定元素在正常文档流中的偏移位置。相对定位完成的过程是首先按static(float)方式生成一个元素(并且元素像层一样浮动了起来)，然后相对于以前的位置移动，移动的方向和幅度由left、right、top、bottom属性确定，<strong>偏移前的位置保留不动（其他元素依照偏移前的元素位置往后进行排列）</strong>。</li>
+<li>固定定位: <code>position: fixed</code> 表示固定定位，与absolute定位类型类似，但它的相对移动的坐标是视图（屏幕内的网页窗口）本身。由于视图本身是固定的，<strong>它不会随浏览器窗口的滚动条滚动而变化</strong>，除非你在屏幕中移动浏览器窗口的屏幕位置，或改变浏览器窗口的显示大小，因此固定定位的元素会始终位于浏览器窗口内视图的某个位置，不会受文档流动影响。</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>掌握<code>float</code>的相关知识: 浮动模型，让块状元素并排显示</li>
+<li>掌握基本的布局方式<ul>
+<li>块级元素居中显示: <code>margin: 0 auto</code> 如果想要设置距离顶端的边距的话，可以设置为<code>margin: 80px auto auto</code>，这里必须要写成<code>top|(left and right)|bottom</code>的形式才可以。这里还有一个问题，就是当浏览器宽度缩小时，会形式左右的滚动条，而文字本身不会自适应。**解决方法: 将<code>width: 600px</code>替换为<code>max-width: 600px</code>，尤其是移动设备上的显示尤其重要。</li>
+<li>盒子模型的宽度: <code>box-sizing: border-box</code>会使得边框和内边距不再增加整个盒子的宽度，这能让我们更好的控制盒子的大小。</li>
+<li>position: <a href="http://zh.learnlayout.com/position.html" target="_blank" rel="external">太多了，详见这里！</a></li>
+<li><code>inline-block</code>与<code>float</code>: 它们都可以用来创建多个网格铺满浏览器，不过<code>float</code>的方式更加困难一点，需要在后面清楚浮动才可以。</li>
+</ul>
+</li>
+<li>了解<code>Grid</code>、<code>Flexbox</code>等布局方式: 新的<code>flexbox</code>布局模式被用来重新定义CSS中的布局方式。很遗憾的是最近规范变动过多，导致各个浏览器对它的实现也有所不同。</li>
 </ul>
 
       
@@ -435,6 +474,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/02/微信小程序（一）/" rel="prev" title="微信小程序（一）">
+                微信小程序（一） <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -514,7 +557,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -585,7 +628,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
