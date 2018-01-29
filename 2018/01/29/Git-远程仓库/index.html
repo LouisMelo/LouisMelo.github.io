@@ -69,17 +69,19 @@
 
 
 
-<meta name="description" content="上一篇文章主要介绍了koa2的基本操作(坐下坐下)，但是每次都返回一样的HTML似乎也不可能，所以现在我们需要来处理URL了。 直接来点高级点的东西，我们需要一个能处理URL的middleware，它叫做:koa-router:  npm install koa-router  1234567891011121314151617181920const Koa = require(&apos;koa&apos;);co">
+<meta name="description" content="Git 远程仓库Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。 实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Node.js Web开发（二）">
-<meta property="og:url" content="https://louismelo.github.io/2017/09/25/Node-js-Web开发（二）/index.html">
+<meta property="og:title" content="Git-远程仓库">
+<meta property="og:url" content="https://louismelo.github.io/2018/01/29/Git-远程仓库/index.html">
 <meta property="og:site_name" content="Louis - 东篱之下">
-<meta property="og:description" content="上一篇文章主要介绍了koa2的基本操作(坐下坐下)，但是每次都返回一样的HTML似乎也不可能，所以现在我们需要来处理URL了。 直接来点高级点的东西，我们需要一个能处理URL的middleware，它叫做:koa-router:  npm install koa-router  1234567891011121314151617181920const Koa = require(&apos;koa&apos;);co">
+<meta property="og:description" content="Git 远程仓库Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。 实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-25T15:58:46.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517236361/Screen_Shot_2018-01-29_at_10.28.11_PM_nk5nbs.png">
+<meta property="og:updated_time" content="2018-01-29T14:34:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Node.js Web开发（二）">
-<meta name="twitter:description" content="上一篇文章主要介绍了koa2的基本操作(坐下坐下)，但是每次都返回一样的HTML似乎也不可能，所以现在我们需要来处理URL了。 直接来点高级点的东西，我们需要一个能处理URL的middleware，它叫做:koa-router:  npm install koa-router  1234567891011121314151617181920const Koa = require(&apos;koa&apos;);co">
+<meta name="twitter:title" content="Git-远程仓库">
+<meta name="twitter:description" content="Git 远程仓库Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。 实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从">
+<meta name="twitter:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517236361/Screen_Shot_2018-01-29_at_10.28.11_PM_nk5nbs.png">
 
 
 
@@ -109,13 +111,13 @@
 
 
 
-  <link rel="canonical" href="https://louismelo.github.io/2017/09/25/Node-js-Web开发（二）/"/>
+  <link rel="canonical" href="https://louismelo.github.io/2018/01/29/Git-远程仓库/"/>
 
 
 
 
 
-  <title>Node.js Web开发（二） | Louis - 东篱之下</title>
+  <title>Git-远程仓库 | Louis - 东篱之下</title>
   
 
 
@@ -232,7 +234,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/09/25/Node-js-Web开发（二）/">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/29/Git-远程仓库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Louis Melo">
@@ -249,7 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Node.js Web开发（二）</h1>
+          <h1 class="post-title" itemprop="name headline">Git-远程仓库</h1>
         
 
         <div class="post-meta">
@@ -261,8 +263,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T21:20:05+08:00">
-                2017-09-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T22:11:58+08:00">
+                2018-01-29
               </time>
             
 
@@ -271,28 +273,6 @@
             
           </span>
 
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
           
 
           
@@ -321,22 +301,20 @@
       
 
       
-        <p>上一篇文章主要介绍了koa2的基本操作(坐下坐下)，但是每次都返回一样的HTML似乎也不可能，所以现在我们需要来处理URL了。</p>
-<p>直接来点高级点的东西，我们需要一个能处理URL的middleware，它叫做:<strong>koa-router</strong>:</p>
-<blockquote>
-<p>npm install koa-router</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">'koa-router'</span>)();</div><div class="line"></div><div class="line"><span class="keyword">const</span> app = Koa();</div><div class="line"></div><div class="line">router.get(<span class="string">'/hello/:name'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> name = ctx.params.name;</div><div class="line">  ctx.response.body = <span class="string">`&lt;h1&gt;Hello, &#123;$name&#125;!&lt;/h1&gt;`</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.get(<span class="string">'/'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</div><div class="line">  ctx.response.body = <span class="string">'&lt;h1&gt;Index Page&lt;/h1&gt;'</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// add router middleware</span></div><div class="line">app.use(router.routes());</div><div class="line"></div><div class="line">app.listen(<span class="number">3000</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Server listen on port 3000...'</span>);</div></pre></td></tr></table></figure>
-<p>这里的代码，会在访问网址localhost:3000时返回Index Page，而在访问localhost:3000/hello/louis的时候，显示的就是Hello, louis!了，这样router就为我们达到了处理URL的功能。注意一下，在引入router的时候，是多一个括号的，这说明我们引入的router是一个对象，而前面Koa引入的其实是一个类(所以它被大写了~)。</p>
-<a id="more"></a>
-<hr>
-<h4 id="处理POST请求"><a href="#处理POST请求" class="headerlink" title="处理POST请求"></a>处理POST请求</h4><p>router.get()处理的是HTTP的GET请求，但是除了GET请求，我们还经常会碰到POST请求(比如在注册一个用户啊，或者新增一篇推文的时候)，这就需要用到router.post()的方法。<strong>不过</strong>，post请求的内容，通常作为request的body进行发送，而Node.js和koa都不具备解析这个body的功能，所以，这里我们就要用到另一个非常有用的middleware: <strong>koa-bodyparser</strong>。</p>
-<blockquote>
-<p>npm install koa-bodyparser</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> bodyParser = <span class="built_in">require</span>(<span class="string">'koa-bodyparser'</span>);</div><div class="line"></div><div class="line">app.use(bodyParser());</div><div class="line"><span class="comment">// bodyParser要在router前被注册到app上</span></div><div class="line">app.use(router.routes());</div><div class="line"></div><div class="line">...</div></pre></td></tr></table></figure>
-<p>现在，我们就可以处理POST的请求了！<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">router.get(<span class="string">'/'</span>, <span class="keyword">async</span> (ctx, next) =&gt; &#123;</div><div class="line">  ctx.response.body = <span class="string">`&lt;h1&gt;Index Page&lt;/h1&gt;</span></div><div class="line"><span class="string">    &lt;form action="/signin" method="post"&gt;</span></div><div class="line"><span class="string">      &lt;p&gt;Name: &lt;input name="name" value="snow"&gt;&lt;/p&gt;</span></div><div class="line"><span class="string">      &lt;p&gt;Password: &lt;input type="password" name="password"&gt;&lt;/p&gt;</span></div><div class="line"><span class="string">      &lt;p&gt;&lt;input type="submit" value="submit"&gt;&lt;/p&gt;</span></div><div class="line"><span class="string">    &lt;/form&gt;`</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.post(<span class="string">'/signin'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</div><div class="line">  <span class="keyword">var</span></div><div class="line">    name = ctx.request.body.name || <span class="string">''</span>,</div><div class="line">    password = ctx.request.body.password || <span class="string">''</span>;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">`login with name: &#123;$name&#125; and password: &#123;$password&#125;...`</span>);</div><div class="line">    <span class="keyword">if</span> (name === <span class="string">'snow'</span> &amp;&amp; password === <span class="string">'117'</span>)&#123;</div><div class="line">      ctx.response.body = <span class="string">`&lt;h1&gt;Welcome, &#123;$name&#125;!&lt;/h1&gt;`</span>;</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      ctx.response.body = <span class="string">`&lt;h1&gt;Login failed.&lt;/h1&gt;</span></div><div class="line"><span class="string">        &lt;p&gt;&lt;a href="/"&gt;Try again&lt;/a&gt;&lt;/p&gt;`</span>;</div><div class="line">    &#125;</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
-<p>注意这里的name和password的写法，如果不存在的话，默认为 <strong>‘’</strong>，也不会报错的。</p>
+        <h1 id="Git-远程仓库"><a href="#Git-远程仓库" class="headerlink" title="Git 远程仓库"></a>Git 远程仓库</h1><p>Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。</p>
+<p>实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从服务器仓库中拉取别人的提交。</p>
+<p>完全可以自己搭建一台运行Git的服务器，不过现阶段，为了学Git先搭个服务器绝对是小题大作。好在这个世界上有个叫GitHub的神奇的网站，从名字就可以看出，这个网站就是提供Git仓库托管服务的，所以，只要注册一个GitHub账号，就可以免费获得Git远程仓库。</p>
+<p>在继续阅读后续内容前，请自行注册GitHub账号。由于你的本地Git仓库和GitHub仓库之间的传输是通过SSH加密的，所以，需要一点设置：</p>
+<p>第一步：创建SSH Key。打开terminal，创建SSH Key：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -t -rsa -C <span class="string">"jsyzliuxb0918@gmail.com"</span></div></pre></td></tr></table></figure></p>
+<p>这里我会将默认的<code>/Users/louis/.ssh/id_rsa</code>改为<code>/Users/louis/.ssh/github_rsa</code>，这里是不需要设置passphrase的，如果不小心设置了的话，可以运行下面的命令进行更改：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ ssh-keygen -p</div></pre></td></tr></table></figure></p>
+<p>这里会一步一步要求你修改你的密码的。如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有<code>github_rsa</code>和<code>github_rsa.pub</code>两个文件，这两个就是SSH Key的秘钥对，<code>github_rsa</code>是私钥，不能泄露出去，<code>github_rsa.pub</code>是公钥，可以放心地告诉任何人。使用下面的命令复制你的公钥：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pbcopy &lt; ~/.ssh/github_rsa.pub</div></pre></td></tr></table></figure></p>
+<p>打开Github，点击头像进入Settings，在左侧选择SSH and GPG Keys：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517236361/Screen_Shot_2018-01-29_at_10.28.11_PM_nk5nbs.png" alt="Github"></p>
+<p>为什么GitHub需要SSH Key呢？因为GitHub需要识别出你推送的提交确实是你推送的，而不是别人冒充的，而Git支持SSH协议，所以，GitHub只要知道了你的公钥，就可以确认只有你自己才能推送。</p>
+<p>当然，GitHub允许你添加多个Key。假定你有若干电脑，你一会儿在公司提交，一会儿在家里提交，只要把每台电脑的Key都添加到GitHub，就可以在每台电脑上往GitHub推送了。</p>
+<p>最后友情提示，在GitHub上免费托管的Git仓库，任何人都可以看到喔（但只有你自己才能改）。所以，不要把敏感信息放进去。</p>
+<p>如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。</p>
+<p>确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。</p>
+<h2 id="添加远程库"><a href="#添加远程库" class="headerlink" title="添加远程库"></a>添加远程库</h2><hr>
 
       
     </div>
@@ -361,8 +339,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/09/24/Node-js-Web开发（一）/" rel="next" title="Node.js Web开发（一）">
-                <i class="fa fa-chevron-left"></i> Node.js Web开发（一）
+              <a href="/2018/01/29/Git-时光机穿梭/" rel="next" title="Git-时光机穿梭">
+                <i class="fa fa-chevron-left"></i> Git-时光机穿梭
               </a>
             
           </div>
@@ -370,10 +348,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/10/10/理财知识整理（一）/" rel="prev" title="理财知识整理（一）">
-                理财知识整理（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -501,7 +475,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#处理POST请求"><span class="nav-number">1.</span> <span class="nav-text">处理POST请求</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git-远程仓库"><span class="nav-number">1.</span> <span class="nav-text">Git 远程仓库</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加远程库"><span class="nav-number">1.1.</span> <span class="nav-text">添加远程库</span></a></li></ol></li></ol></div>
             
 
           </div>
