@@ -232,6 +232,615 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/29/Git-时光机穿梭/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/29/Git-时光机穿梭/" itemprop="url">Git-时光机穿梭</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T14:50:36+08:00">
+                2018-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Git-时光机穿梭"><a href="#Git-时光机穿梭" class="headerlink" title="Git 时光机穿梭"></a>Git 时光机穿梭</h1><p>我们已经可以将文件添加到git仓库了，下面我们试着修改这个文本文件，看看会有什么结果:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software.</div></pre></td></tr></table></figure></p>
+<p>修改完成后，保存，然后运行 <code>git status</code> 看看有什么结果:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">	modified:   readme.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>这样，返回的信息就会告诉我们，现在有文件被修改了，但是还没有被提交（changes not staged for commit）。<br>虽然<code>git status</code>可以告诉我们当前仓库的状况，但是并不能清楚的告诉我们修改了哪些地方。这时候，我们就需要用到<code>git diff</code>命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git diff readme.txt</div><div class="line">diff --git a/readme.txt b/readme.txt</div><div class="line">index 23bc09e..9247db6 100644</div><div class="line">--- a/readme.txt</div><div class="line">+++ b/readme.txt</div><div class="line">@@ -1,2 +1,2 @@</div><div class="line">-Git is version control system.</div><div class="line">+Git is a distributed version control system.</div><div class="line"> Git is free software.</div></pre></td></tr></table></figure></p>
+<p>现在，我们知道了readme.txt中只修改了一行内容。所以我们就可以安心的提交更改了:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div></pre></td></tr></table></figure></p>
+<p>这时候，我们再来看一下git仓库的状态，使用<code>git status</code>命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">	modified:   readme.txt</div></pre></td></tr></table></figure></p>
+<p>这时，系统告诉我们，将要被提交的修改包含了readme.txt文件。<br>现在我们就提交这次修改，使用<code>git commit</code>命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git commit -m <span class="string">'add distributed'</span></div><div class="line">[master 3b15474] add distributed</div><div class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</div></pre></td></tr></table></figure></p>
+<p>提交完成后，我们再使用<code>git status</code>来查看一下仓库的状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">nothing to commit, working tree clean</div></pre></td></tr></table></figure></p>
+<p>这时，返回的信息告诉我们，没有需要提交的修改，而且工作目录是干净的。</p>
+<h2 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h2><hr>
+<p>现在我们已经学会了如何修改文件并且将修改提交到git仓库了，下面再联系一次:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div></pre></td></tr></table></figure></p>
+<p>然后提交修改:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'append GPL'</span></div><div class="line">[master 9b51472] append GPL</div><div class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</div></pre></td></tr></table></figure></p>
+<p>像这样，你不断对文件进行修改，然后不断提交修改到版本库里，就好比玩RPG游戏时，每通过一关就会自动把游戏状态存盘，如果某一关没过去，你还可以选择读取前一关的状态。有些时候，在打Boss之前，你会手动存盘，以便万一打Boss失败了，可以从最近的地方重新开始。Git也是一样，每当你觉得文件修改到一定程度的时候，就可以“保存一个快照”，这个快照在Git中被称为<code>commit</code>。一旦你把文件改乱了，或者误删了文件，还可以从最近的一个<code>commit</code>恢复，然后继续工作，而不是把几个月的工作成果全部丢失。</p>
+<p>好，现在我们回顾一下我们一共有多少个版本了:<br>版本1: add readme file<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Git is a version control system.</div><div class="line">Git is free software.</div></pre></td></tr></table></figure></p>
+<p>版本2: add distributed<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software.</div></pre></td></tr></table></figure></p>
+<p>版本3: append GPL<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div></pre></td></tr></table></figure></p>
+<p>在git中，我们可以使用<code>git log</code>命令来查看历史记录，它可以告诉我们每次都修改了些什么:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span></div><div class="line">commit 9b5147211afee2c3b233d2f74de5f4cec710977b (HEAD -&gt; master)</div><div class="line">Author: louis &lt;louis@promote.cache-dns.local&gt;</div><div class="line">Date:   Mon Jan 29 16:26:38 2018 +0800</div><div class="line"></div><div class="line">    append GPL</div><div class="line"></div><div class="line">commit 3b1547438f09df37716d770a9919fce34405994f</div><div class="line">Author: louis &lt;louis@promote.cache-dns.local&gt;</div><div class="line">Date:   Mon Jan 29 16:21:32 2018 +0800</div><div class="line"></div><div class="line">    add distributed</div><div class="line"></div><div class="line">commit 7b235af1f06c6952dd4cd41eea8c77bb02be5dce</div><div class="line">Author: louis &lt;louis@promote.cache-dns.local&gt;</div><div class="line">Date:   Mon Jan 29 14:55:59 2018 +0800</div><div class="line"></div><div class="line">    add readme file</div></pre></td></tr></table></figure></p>
+<p>如果觉得输出的信息太多了，可以试着使用<code>git log --pretty=online</code>，这样，就能看到最精简的信息了。</p>
+<p>这里的<code>commit 7b235af1f06c6952dd4cd41eea8c77bb02be5dce</code>就是版本号了，和SVN不一样，git的版本号不是1，2，3，4这样递增的数字，而是一个SHA1计算出来的非常大的数字，用16进制表示。为什么<code>commit id</code>需要用这么一大串数字表示呢？因为Git是分布式的版本控制系统，后面我们还要研究多人在同一个版本库里工作，如果大家都用1，2，3，4作为版本号，那肯定就冲突了。</p>
+<p>好了，现在我们知道了这些版本的历史记录之后，就可以启动时光穿梭机了。我们准备把readme.txt回退到上一个版本，即”add distributed”的那个版本，需要怎么做呢？<br>首先，必须知道当前版本是哪个版本，在git中，使用<code>HEAD</code>表示当前的版本，上一个版本就是<code>HEAD^</code>，上上个版本就是<code>HEAD^^</code>，但是如果是上100个版本呢？我们可以写成<code>HEAD~100</code>。<br>现在我们要把当前版本”append GPL”回退到上一个版本”add distributed”，我们需要使用到<code>git reset</code>命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git reset --hard HEAD^</div><div class="line">HEAD is now at 3b15474 add distributed</div></pre></td></tr></table></figure></p>
+<p><code>--hard</code>的含义，后续会讲到，先来看看<code>readme.txt</code>是否回到了<code>add distributed</code>版本:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software.</div></pre></td></tr></table></figure></p>
+<p>可以发现，现在我们确实回到了<code>add distributed</code>那个版本，我们还可以继续回到上一个版本，不过我们先停一下，使用<code>git log</code>查看一下版本记录:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span></div><div class="line">commit 3b1547438f09df37716d770a9919fce34405994f (HEAD -&gt; master)</div><div class="line">Author: louis &lt;louis@promote.cache-dns.local&gt;</div><div class="line">Date:   Mon Jan 29 16:21:32 2018 +0800</div><div class="line"></div><div class="line">    add distributed</div><div class="line"></div><div class="line">commit 7b235af1f06c6952dd4cd41eea8c77bb02be5dce</div><div class="line">Author: louis &lt;louis@promote.cache-dns.local&gt;</div><div class="line">Date:   Mon Jan 29 14:55:59 2018 +0800</div><div class="line"></div><div class="line">    add readme file</div></pre></td></tr></table></figure></p>
+<p>什么？！我们的<code>append GPL</code>的版本怎么不见了呢？好比你从21世纪坐时光穿梭机来到了19世纪，想再回去已经回不去了，肿么办？<br>办法其实还是有的，只要上面的命令行窗口还没有被关掉，你就可以顺着往上找啊找啊，找到那个<code>append GPL</code>的<code>commit id</code>是9b51472…，于是就可以指定回到未来的某个版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git reset --hard 9b51472</div><div class="line">HEAD is now at 9b51472 append GPL</div></pre></td></tr></table></figure></p>
+<p>版本号没必要写全，前几位就可以了，Git会自动去找。当然也不能只写前一两位，因为Git可能会找到多个版本号，就无法确定是哪一个了。</p>
+<p>再小心翼翼地看看readme.txt的内容:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div></pre></td></tr></table></figure></p>
+<p>果然，我胡汉三又回来了。</p>
+<p>Git的版本回退速度非常快，因为Git在内部有个指向当前版本的<code>HEAD</code>指针，当你回退版本的时候，Git仅仅是把<code>HEAD从</code>指向<code>append GPL</code>:<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384907584977fc9d4b96c99f4b5f8e448fbd8589d0b2000/0" alt="append GPL"><br>改为指向<code>add distributed</code>:<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384907594057a873c79f14184b45a1a66b1509f90b7a000/0" alt="add distributed"><br>然后顺便把工作区的文件更新了。所以你让<code>HEAD</code>指向哪个版本号，你就把当前版本定位在哪。</p>
+<p>现在，你回退到了某个版本，关掉了电脑，第二天早上就后悔了，想恢复到新版本怎么办？找不到新版本的<code>commit id</code>怎么办？</p>
+<p>在Git中，总是有后悔药可以吃的。当你用<code>$ git reset --hard HEAD^</code>回退到<code>add distributed</code>版本时，再想恢复到<code>append GPL</code>，就必须找到<code>append GPL</code>的<code>commit id</code>。Git提供了一个命令<code>git reflog</code>用来记录你的每一次命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git reflog</div><div class="line">9b51472 (HEAD -&gt; master) HEAD@&#123;0&#125;: reset: moving to 9b51472</div><div class="line">3b15474 HEAD@&#123;1&#125;: reset: moving to HEAD^</div><div class="line">9b51472 (HEAD -&gt; master) HEAD@&#123;2&#125;: commit: append GPL</div><div class="line">3b15474 HEAD@&#123;3&#125;: commit: add distributed</div><div class="line">7b235af HEAD@&#123;4&#125;: commit (initial): add readme file</div></pre></td></tr></table></figure></p>
+<p>从返回的信息可以看出来，<code>append GPL</code>的<code>commit id</code>为<code>9b51472</code>。这样，我们就又可以回到未来啦！</p>
+<h2 id="工作区和暂存区"><a href="#工作区和暂存区" class="headerlink" title="工作区和暂存区"></a>工作区和暂存区</h2><hr>
+<p>Git和其他版本控制系统如SVN的一个不同之处就是有暂存区的概念。</p>
+<p>先来看名词解释。</p>
+<p>工作区（Working Directory）<br>就是你在电脑里能看到的目录，比如我的<code>learngit</code>文件夹就是一个工作区：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/0013849082162373cc083b22a2049c4a47408722a61a770000/0" alt="工作区"></p>
+<p>版本库（Git Repository）<br>工作区有一个隐藏目录<code>.git</code>，这个不算工作区，而是Git的版本库。</p>
+<p>Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支<code>master</code>，以及指向<code>master</code>的一个指针叫<code>HEAD</code>。<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384907702917346729e9afbf4127b6dfbae9207af016000/0" alt="版本库"><br>分支和<code>HEAD</code>的概念我们以后再讲。</p>
+<p>前面讲了我们把文件往Git版本库里添加的时候，是分两步执行的：</p>
+<p>第一步是用<code>git add</code>把文件添加进去，实际上就是把文件修改添加到暂存区；</p>
+<p>第二步是用<code>git commit</code>提交更改，实际上就是把暂存区的所有内容提交到当前分支。</p>
+<p>因为我们创建Git版本库时，Git自动为我们创建了唯一一个<code>master</code>分支，所以，现在，<code>git commit</code>就是往<code>master</code>分支上提交更改。</p>
+<p>你可以简单理解为，需要提交的文件修改通通放到暂存区，然后，一次性提交暂存区的所有修改。</p>
+<p>俗话说，实践出真知。现在，我们再练习一遍，先对<code>readme.txt</code>做个修改，比如加上一行内容:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div></pre></td></tr></table></figure></p>
+<p>然后，在工作区新增一个<code>LICENSE</code>文件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ touch LICENSE</div><div class="line">$ nano LICENSE</div></pre></td></tr></table></figure></p>
+<p>现在，我们用<code>git status</code>查看一下仓库的状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">	modified:   readme.txt</div><div class="line"></div><div class="line">Untracked files:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to include <span class="keyword">in</span> what will be committed)</div><div class="line"></div><div class="line">	LICENSE</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>返回的信息清楚的告诉了我们，<code>readme.txt</code>被修改了，而<code>LICENSE</code>是第一次出现，所以状态是<code>Untracked</code>。</p>
+<p>现在，使用两次<code>git add</code>，把两个文件都添加后，再使用<code>git status</code>查看一下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">	new file:   LICENSE</div><div class="line">	modified:   readme.txt</div></pre></td></tr></table></figure></p>
+<p>现在，暂存区的状态就变成这样了:<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384907720458e56751df1c474485b697575073c40ae9000/0" alt="暂存区"><br>所以，<code>git add</code>命令实际上就是把要提交的所有修改放到暂存区（Stage），然后，执行<code>git commit</code>就可以一次性把暂存区的所有修改提交到分支。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git commit -m <span class="string">"understand how stage works"</span></div><div class="line">[master 2e3b6fb] understand how stage works</div><div class="line"> 2 files changed, 2 insertions(+)</div><div class="line"> create mode 100644 LICENSE</div></pre></td></tr></table></figure></p>
+<p>一旦提交成功后，这时你的工作区就是干净的了:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">nothing to commit, working tree clean</div></pre></td></tr></table></figure></p>
+<p>现在，版本库就变成了这样:<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/0013849077337835a877df2d26742b88dd7f56a6ace3ecf000/0" alt="版本库"></p>
+<h2 id="管理修改"><a href="#管理修改" class="headerlink" title="管理修改"></a>管理修改</h2><hr>
+<p>现在，我们已经掌握了暂存区的概念。接下来，我们讨论一下，为什么Git比其他版本控制系统设计的优秀，因为Git跟踪并管理的是修改，而非文件。<br>那什么是修改呢？比如你新增了一行，这就是一个修改；删除了一行，也是一个修改；更改了某些字符，也是一个修改；删了一些又加了一些，也是一个修改；甚至创建一个新文件，也算一个修改。<br>为什么说Git管理的是修改，而不是文件呢？我们还是做实验。第一步，对readme.txt做一个修改，比如加一行内容:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cat readme.text</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div><div class="line">Git tracks changes.</div></pre></td></tr></table></figure></p>
+<p>然后，添加到暂存区:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">	modified:   readme.txt</div></pre></td></tr></table></figure></p>
+<p>然后，再次修改<code>readme.txt</code>:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt </div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div><div class="line">Git tracks changes of files.</div></pre></td></tr></table></figure></p>
+<p>提交:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git commit -m <span class="string">'git tracks changes'</span></div><div class="line">[master 43daa3e] git tracks changes</div><div class="line"> 1 file changed, 1 insertion(+)</div></pre></td></tr></table></figure></p>
+<p>提交后，再看看状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">	modified:   readme.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>为什么这里第二次的修改没有被提交呢？<br>我们来回顾一下整个操作过程:<br>第一次修改 -&gt; <code>git add</code> -&gt; 第二次修改 -&gt; <code>git commit</code><br>我们前面讲了，Git管理的是修改，当你使用<code>git add</code>命令后，在工作区的第一次修改被放入暂存区，准备提交，但是，在工作区的第二次修改并没有放入暂存区，所以，<code>git commit</code>只负责把暂存区的修改提交了，也就是第一次的修改被提交了，第二次的修改不会被提交。<br>提交后，用<code>git diff HEAD -- readme.txt</code>命令可以查看工作区和版本库里面最新版本的区别:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">$ git diff HEAD -- readme.txt</div><div class="line">diff --git a/readme.txt b/readme.txt</div><div class="line">index 76d770f..a9c5755 100644</div><div class="line">--- a/readme.txt</div><div class="line">+++ b/readme.txt</div><div class="line">@@ -1,4 +1,4 @@</div><div class="line"> Git is a distributed version control system.</div><div class="line"> Git is free software distributed under the GPL.</div><div class="line"> Git has a mutable index called stage.</div><div class="line">-Git tracks changes.</div><div class="line">+Git tracks changes of files.</div></pre></td></tr></table></figure></p>
+<p>可见，第二次修改确实没有被提交。那怎么才能提交第二次的修改呢？只有继续使用<code>git add</code>将修改提交到暂存区，然后再使用<code>git commit</code>将暂存区的修改提交。现在可以了解到，每一次修改，如果不<code>add</code>到暂存区，那就不会加入到<code>commit</code>中。</p>
+<h2 id="撤销修改"><a href="#撤销修改" class="headerlink" title="撤销修改"></a>撤销修改</h2><hr>
+<p>自然，你是不会犯错的。不过现在是凌晨两点，你正在赶一份工作报告，你在<code>readme.txt</code>中添加了一行:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div><div class="line">Git tracks changes of files.</div><div class="line">My stupid boss still prefers SVN.</div></pre></td></tr></table></figure></p>
+<p>在你准备提交前，一杯咖啡起了作用，你猛然发现了“stupid boss”可能会让你丢掉这个月的奖金！</p>
+<p>既然错误发现得很及时，就可以很容易地纠正它。你可以删掉最后一行，手动把文件恢复到上一个版本的状态。如果用<code>git status</code>查看一下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line"> On branch master</div><div class="line"> Changes not staged <span class="keyword">for</span> commit:</div><div class="line">   (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">   (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">       modified:   readme.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>从返回的信息可以发现，你可以使用<code>git checkout -- readme.txt</code>来丢弃工作区的修改:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git checkout -- readme.txt</div></pre></td></tr></table></figure></p>
+<p>命令<code>git checkout -- readme.txt</code>意思就是，把<code>readme.txt</code>文件在工作区的修改全部撤销，这里有两种情况：</p>
+<p>一种是<code>readme.txt</code>自修改后还没有被放到暂存区，现在，撤销修改就回到和版本库一模一样的状态；</p>
+<p>一种是<code>readme.txt</code>已经添加到暂存区后，又作了修改，现在，撤销修改就回到添加到暂存区后的状态。</p>
+<p>总之，就是让这个文件回到最近一次<code>git commit</code>或<code>git add</code>时的状态。</p>
+<p>现在，看看<code>readme.txt</code>的文件内容：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div><div class="line">Git tracks changes of files.</div></pre></td></tr></table></figure></p>
+<p>文件内容果然复原了。</p>
+<p><code>git checkout -- file</code>命令中的<code>--</code>很重要，没有<code>--</code>，就变成了“切换到另一个分支”的命令，我们在后面的分支管理中会再次遇到<code>git checkout</code>命令。</p>
+<p>现在假定是凌晨3点，你不但写了一些胡话，还<code>git add</code>到暂存区了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ cat readme.txt</div><div class="line">Git is a distributed version control system.</div><div class="line">Git is free software distributed under the GPL.</div><div class="line">Git has a mutable index called stage.</div><div class="line">Git tracks changes of files.</div><div class="line">My stupid boss still prefers SVN.</div><div class="line"></div><div class="line">$ git add readme.txt</div></pre></td></tr></table></figure></p>
+<p>这时，使用<code>git status</code>查看一下当前的状态:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes to be committed:</div><div class="line">  (use <span class="string">"git reset HEAD &lt;file&gt;..."</span> to unstage)</div><div class="line"></div><div class="line">	modified:   readme.txt</div></pre></td></tr></table></figure></p>
+<p>Git同样告诉我们，用命令<code>git reset HEAD file</code>可以把暂存区的修改撤销掉（unstage），重新放回工作区：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git reset HEAD readme.txt</div><div class="line">Unstaged changes after reset:</div><div class="line">M       readme.txt</div></pre></td></tr></table></figure></p>
+<p><code>git reset</code>命令既可以回退版本，也可以把暂存区的修改回退到工作区。当我们用<code>HEAD</code>时，表示最新的版本。</p>
+<p>再用<code>git status</code>查看一下，现在暂存区是干净的，工作区有修改:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">	modified:   readme.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>还记得如何撤销工作区的修改吗？<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git checkout -- readme.txt</div><div class="line"></div><div class="line">$ git status</div><div class="line"> On branch master</div><div class="line">nothing to commit (working directory clean)</div></pre></td></tr></table></figure></p>
+<p>现在，假设你不但改错了东西，还从暂存区提交到了版本库，怎么办呢？还记得版本回退一节吗？可以回退到上一个版本。不过，这是有条件的，就是你还没有把自己的本地版本库推送到远程。还记得Git是分布式版本控制系统吗？我们后面会讲到远程版本库，一旦你把“stupid boss”提交推送到远程版本库，你就真的惨了……</p>
+<p>场景1：当你改乱了工作区某个文件的内容，想直接丢弃工作区的修改时，用命令<code>git checkout -- file</code>。</p>
+<p>场景2：当你不但改乱了工作区某个文件的内容，还添加到了暂存区时，想丢弃修改，分两步，第一步用命令<code>git reset HEAD file</code>，就回到了场景1，第二步按场景1操作。</p>
+<p>场景3：已经提交了不合适的修改到版本库时，想要撤销本次提交，参考版本回退一节，不过前提是没有推送到远程库。</p>
+<h2 id="删除文件"><a href="#删除文件" class="headerlink" title="删除文件"></a>删除文件</h2><hr>
+<p>在Git中，删除也是一个修改操作，我们实战一下，先添加一个新文件test.txt到Git并且提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git add test.txt</div><div class="line">$ git commit -m <span class="string">'add test.txt'</span></div><div class="line">[master e432478] add test.txt</div><div class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</div><div class="line"> create mode 100644 test.txt</div></pre></td></tr></table></figure></p>
+<p>一般情况下，你通常直接在文件管理器中把没用的文件删了，或者用<code>rm</code>命令删了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ rm test.txt</div></pre></td></tr></table></figure></p>
+<p>这个时候，Git知道你删除了文件，因此，工作区和版本库就不一致了，<code>git status</code>命令会立刻告诉你哪些文件被删除了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Changes not staged <span class="keyword">for</span> commit:</div><div class="line">  (use <span class="string">"git add/rm &lt;file&gt;..."</span> to update what will be committed)</div><div class="line">  (use <span class="string">"git checkout -- &lt;file&gt;..."</span> to discard changes <span class="keyword">in</span> working directory)</div><div class="line"></div><div class="line">	deleted:    test.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令<code>git rm</code>删掉，并且<code>git commit</code>：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">$ git rm test.txt</div><div class="line">rm <span class="string">'test.txt'</span></div><div class="line">$ git commit -m <span class="string">'remove test.txt'</span></div><div class="line">[master cdaffb3] remove test.txt</div><div class="line"> 1 file changed, 0 insertions(+), 0 deletions(-)</div><div class="line"> delete mode 100644 test.txt</div></pre></td></tr></table></figure></p>
+<p>现在，文件就从版本库中被删除了。</p>
+<p>另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git checkout -- test.txt</div></pre></td></tr></table></figure></p>
+<p><code>git checkout</code>其实是用版本库里的版本替换工作区的版本，无论工作区是修改还是删除，都可以“一键还原”。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/23/Git-简介/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/23/Git-简介/" itemprop="url">Git-简介</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T20:50:05+08:00">
+                2018-01-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Git-简介"><a href="#Git-简介" class="headerlink" title="Git 简介"></a>Git 简介</h1><h2 id="安装Git"><a href="#安装Git" class="headerlink" title="安装Git"></a>安装Git</h2><hr>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>运行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install git</div></pre></td></tr></table></figure></p>
+<h3 id="MacOS"><a href="#MacOS" class="headerlink" title="MacOS"></a>MacOS</h3><ol>
+<li>使用Homebrew安装</li>
+<li>使用Xcode中的安装Command Line Tools</li>
+</ol>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><p>在git-scm网站下载安装git</p>
+<p>最后，需要对git进行初始配置:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">git config --global user.name <span class="string">"Your name"</span></div><div class="line">git conifg --global user.email <span class="string">"youremail@example.com"</span></div></pre></td></tr></table></figure></p>
+<h2 id="创建版本库"><a href="#创建版本库" class="headerlink" title="创建版本库"></a>创建版本库</h2><hr>
+<p>版本库就是仓库，英文是repository。你可以简单理解成一个目录，这个目录里面的所有文件都可以被Git管理起来，每个文件的修改、删除，Git都能跟踪，以便任何时刻都可以追踪历史，或者在将来某个时刻可以“还原”。</p>
+<p>创建一个版本库很简单:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ mkdir louis-git</div><div class="line">$ <span class="built_in">cd</span> louis-git</div><div class="line">$ <span class="built_in">pwd</span></div><div class="line">/Users/louis/louis-git</div></pre></td></tr></table></figure></p>
+<p><code>pwd</code>的作用是显示当前目录。<br>现在我们通过 <code>git init</code> 来初始化这个git仓库:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git init</div><div class="line">Initialized empty Git repository <span class="keyword">in</span> /Users/louis/louisgit/.git/</div></pre></td></tr></table></figure></p>
+<p>这样，我们就已经创建好一个git仓库了，可以从命令行中看出来，这个仓库现在还是 <code>empty</code> 的。下面我们就开始将文件添加到这个 Git repository。</p>
+<h3 id="把文件添加到版本库"><a href="#把文件添加到版本库" class="headerlink" title="把文件添加到版本库"></a>把文件添加到版本库</h3><p>首先需要说明的是，所有的版本控制系统，其实都只能跟踪<code>文本文件</code>的改动，比如TXT，网页，程序代码等，Git也是这样的。版本控制系统可以告诉你每次的改动，比如在第5行加了一个单词“Linux”，在第8行删了一个单词“Windows”。而图片、视频这些二进制文件，虽然也能由版本控制系统管理，但没法跟踪文件的变化，只能把二进制文件每次改动串起来，也就是只知道图片从100KB改成了120KB，但到底改了啥，版本控制系统不知道，也没法知道。</p>
+<p>不幸的是，Microsoft的Word格式是二进制格式，因此，版本控制系统是没法跟踪Word文件的改动的。</p>
+<p>因为文本是有编码的，比如中文有常用的GBK编码，强烈建议使用标准的UTF-8编码，所有语言使用同一种编码，既没有冲突，又被所有平台所支持。</p>
+<p>现在我们在learngit目录下，创建一个新的文本文件，就叫做<code>readme.txt</code>，并在其中输入如下内容。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">Git is version control system.</div><div class="line">Git is free software.</div><div class="line">``` </div><div class="line">下面我们要将这个文本文件添加到 git 仓库就需要以下两步: </div><div class="line">第一步，使用`git add`命令</div><div class="line">```bash</div><div class="line">$ git add readme.txt</div></pre></td></tr></table></figure></p>
+<p>第二步，使用<code>git commit</code>命令<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git commit -m <span class="string">'add a readme file'</span></div></pre></td></tr></table></figure></p>
+<p>这样，就成功将<code>readme.txt</code>添加到了git仓库里了，可以说非常简单。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/08/录制用户的音频-视频/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/08/录制用户的音频-视频/" itemprop="url">录制用户的音频 & 视频</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-08T20:25:42+08:00">
+                2018-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="录制音频"><a href="#录制音频" class="headerlink" title="录制音频"></a>录制音频</h2><p>许多浏览器现在都能访问用户的音频和视频输入。</p>
+<h3 id="简单的版本"><a href="#简单的版本" class="headerlink" title="简单的版本"></a>简单的版本</h3><p>最简易的方式就是让用户自己提供预先录制的文件。其实现步骤是：创建一个简单的文件输入元素，然后添加一个表示我们只接受音频文件的<code>accept</code>过滤器，在理想情况下，我们可以直接从麦克风获取这些文件。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"audio/*"</span> <span class="attr">captrue</span>=<span class="string">"microphone"</span>&gt;</span></div></pre></td></tr></table></figure>
+<p><strong>此方法在所有平台上都有效</strong>。在桌面平台上，它会提示用户通过文件系统上传文件（忽略microphone的条件）。在iOS上的Safari中，它会打开麦克风应用让您录制音频，然后将其传回网页；在Android上，它允许用户选择合适的应用来录制音频，并将其传回网页。</p>
+<p>用户完成录制并返回网站后，您需要以某种方式掌握文件数据。 为 input 元素附加一个<code>onchange</code>事件，然后读取事件对象的files属性，便可快速获得访问权。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"audio/*"</span> <span class="attr">capture</span>=<span class="string">"microphone"</span> <span class="attr">id</span>=<span class="string">"recorder"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">id</span>=<span class="string">"player"</span> <span class="attr">controls</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="javascript">  <span class="keyword">var</span> recorder = <span class="built_in">document</span>.getElementById(<span class="string">'recorder'</span>);</span></div><div class="line"><span class="javascript">  <span class="keyword">var</span> player = <span class="built_in">document</span>.getElementById(<span class="string">'player'</span>);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  recorder.addEventListener(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></div><div class="line"><span class="javascript">    <span class="keyword">var</span> file = e.target.files[<span class="number">0</span>]; </span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">    player.src =  URL.createObjectURL(file);</span></div><div class="line"><span class="undefined">  &#125;);</span></div><div class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在获得文件的访问权之后，便可以对其进行任意操作，比如：</p>
+<ul>
+<li>将其直接附加到一个<code>audio</code>元素，这样就能播放文件了</li>
+<li>将其下载至用户设备</li>
+<li>通过将其附加到一个XMLHttpRequest，上传至服务器</li>
+<li>通过Web Audio API传递文件</li>
+</ul>
+<p>尽管使用 input 元素方法获得对音频数据访问权的情况普遍存在，却是最没有吸引力的方案。 因为我们真正需要的是获得对麦克风的访问权，直接在页面内提供良好的体验。</p>
+<h3 id="以交互方式访问麦克风"><a href="#以交互方式访问麦克风" class="headerlink" title="以交互方式访问麦克风"></a>以交互方式访问麦克风</h3><p>现代浏览器可直连麦克风，我们可以借此打造与网页完全集成的体验，让用户永远都不需要离开浏览器。</p>
+<h4 id="获得对麦克风的访问权"><a href="#获得对麦克风的访问权" class="headerlink" title="获得对麦克风的访问权"></a>获得对麦克风的访问权</h4><p>我们可以利用 WebRTC(Web Real-Time Communication) 规范中名为 <code>getUserMedia()</code> 的API直接访问麦克风。<code>getUserMedia()</code> 将提示用户授予对其相连<strong>麦克风(microphone)</strong>和<strong>摄像头(camera)</strong>的访问权。<br>如果授权成功了，该API会返回一个 <code>Stream</code>，其中包含了来自麦克风和摄像头的数据，然后我们将音频数据附加到一个 <code>&lt;audio&gt;</code> 元素、将其附加到一个网络音频 <code>AudioContext</code>或者使用 <code>MediaRecorder</code> API将其进行保存。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">audio</span> <span class="attr">id</span>=<span class="string">"player"</span> <span class="attr">controls</span>=<span class="string">"controls"</span>&gt;</span><span class="tag">&lt;/<span class="name">audio</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="javascript">  <span class="keyword">var</span> player = <span class="built_in">document</span>.getElementById(<span class="string">'player'</span>);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  <span class="keyword">var</span> handleSuccess = <span class="function"><span class="keyword">function</span>(<span class="params">stream</span>)</span>&#123;</span></div><div class="line"><span class="javascript">    <span class="keyword">if</span> (<span class="built_in">window</span>.URL) &#123;</span></div><div class="line"><span class="javascript">      player.src = <span class="built_in">window</span>.URL.createObjectURL(stream);</span></div><div class="line"><span class="javascript">    &#125; <span class="keyword">else</span> &#123;</span></div><div class="line"><span class="undefined">      player.src = stream;</span></div><div class="line"><span class="undefined">    &#125;</span></div><div class="line"><span class="undefined">  &#125;;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  navigator.mediaDevices.getUserMedia(&#123;<span class="attr">audio</span>:<span class="literal">true</span>, <span class="attr">video</span>:<span class="literal">false</span>&#125;).then(handleSuccess);</span></div><div class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>在开启网页后，会询问是否允许访问麦克风设备，并且此时，点击 <code>&lt;audio&gt;</code> 控件的播放按钮，会实时的输出麦克风接收到的音频。<br>不过，这段代码的代码作用并不太大。我们所能做的太少了。</p>
+<h4 id="从麦克风获得原始数据"><a href="#从麦克风获得原始数据" class="headerlink" title="从麦克风获得原始数据"></a>从麦克风获得原始数据</h4><h4 id="保存来自麦克风的数据"><a href="#保存来自麦克风的数据" class="headerlink" title="保存来自麦克风的数据"></a>保存来自麦克风的数据</h4><p>想要保存来自麦克风的数据，最简便的方法就是使用 <code>MediaRecorder</code> API。</p>
+<p><code>MediaRecorder</code> API 将获取 <code>getUserMedia</code> 创建的卡片流信息，然后渐进式的将卡片信息流中的数据保存到首选目的地。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">a</span> <span class="attr">id</span>=<span class="string">"download"</span>&gt;</span>Download<span class="tag">&lt;/<span class="name">a</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"stop"</span>&gt;</span>Stop<span class="tag">&lt;/<span class="name">button</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="undefined"></span></div><div class="line"><span class="javascript">  <span class="keyword">let</span> shouldStop = <span class="literal">false</span>;</span></div><div class="line"><span class="javascript">  <span class="keyword">let</span> stopped = <span class="literal">false</span>;</span></div><div class="line"><span class="javascript">  <span class="keyword">const</span> downloadLink = <span class="built_in">document</span>.getElementById(<span class="string">'download'</span>);</span></div><div class="line"><span class="javascript">  <span class="keyword">const</span> stopButton = <span class="built_in">document</span>.getElementById(<span class="string">'stop'</span>);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  stopButton.addEventListen(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span></div><div class="line"><span class="javascript">    shouldStop = <span class="literal">true</span>;</span></div><div class="line"><span class="undefined">  &#125;);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  <span class="keyword">var</span> handleSuccess = <span class="function"><span class="keyword">function</span>(<span class="params">stream</span>)</span>&#123;</span></div><div class="line"><span class="javascript">    <span class="keyword">const</span> options = &#123;<span class="attr">mimeType</span>:<span class="string">'video/webm;codecs=vp9'</span>&#125;;</span></div><div class="line"><span class="javascript">    <span class="keyword">const</span> recordedChunks = [];</span></div><div class="line"><span class="javascript">    <span class="keyword">const</span> mediaRecorder = <span class="keyword">new</span> MediaRecorder(stream, options);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">    mediaRecorder.addEventListener(<span class="string">'dataavailable'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</span></div><div class="line"><span class="javascript">      <span class="keyword">if</span> (e.data.size &gt; <span class="number">0</span>) &#123;</span></div><div class="line"><span class="undefined">        recordedChunks.push(e.data);</span></div><div class="line"><span class="undefined">      &#125;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">      <span class="keyword">if</span>(shouldStop === <span class="literal">true</span> &amp;&amp; stopped === <span class="literal">false</span>) &#123;</span></div><div class="line"><span class="undefined">        mediaRecorder.stop();</span></div><div class="line"><span class="javascript">        stopped = <span class="literal">true</span>;</span></div><div class="line"><span class="undefined">      &#125;</span></div><div class="line"><span class="undefined">    &#125;);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">    mediaRecorder.addEventListener(<span class="string">'stop'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span></div><div class="line"><span class="javascript">      downloadLink.href = URL.createObjectURL(<span class="keyword">new</span> Blob(recordedChunks));</span></div><div class="line"><span class="javascript">      downloadLink.download = <span class="string">'acetest.wav'</span>;</span></div><div class="line"><span class="undefined">    &#125;);</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="undefined">    mediaRecorder.start();</span></div><div class="line"><span class="undefined">  &#125;;</span></div><div class="line"><span class="undefined"></span></div><div class="line"><span class="javascript">  navigator.mediaDevices.getUserMedia(&#123;<span class="attr">audio</span>:<span class="literal">true</span>, <span class="attr">video</span>:<span class="literal">false</span>&#125;).then(handleSuccess);</span></div><div class="line"><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/05/MongoDB-Socket-io-Chat/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/05/MongoDB-Socket-io-Chat/" itemprop="url">MongoDB Socket.io Chat</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-05T00:03:31+08:00">
+                2018-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="MongoDB-Socket-io-搭建聊天室应用"><a href="#MongoDB-Socket-io-搭建聊天室应用" class="headerlink" title="MongoDB + Socket.io 搭建聊天室应用"></a>MongoDB + Socket.io 搭建聊天室应用</h2><p>搞了一天的时间，写个小结稍微总结一下过程中碰到的问题。</p>
+<h3 id="Socket-io"><a href="#Socket-io" class="headerlink" title="Socket.io"></a>Socket.io</h3><p>socket.io是聊天室应用的主要通信组件，它使得客户端和服务器可以实时双工的进行基于事件的通信，这是聊天室的基础。在socket.io的官网上，有一个很简单的聊天小应用，主要介绍了在express框架下使用socket.io搭建chat demo的过程。</p>
+<p>在服务器端，主要有以下几个方法较为常用: </p>
+<ol>
+<li><code>io.on(&#39;connection&#39;, (socket) =&gt; {})</code>: 在客户端建立连接的时候会触发这个函数，会通知服务器，有客户端已经连入聊天应用了。</li>
+<li><code>io.on(&#39;disconnect&#39;, () =&gt; {})</code>: 在客户端关闭连接的时候会触发这个函数，告知服务器端，有个客户端已经断开连接了。</li>
+<li><code>io.emit(&#39;someEvent&#39;, object)</code>: 向所有人发送一个事件，并传递一个对象</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/02/微信小程序（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -343,6 +952,9 @@
 <h3 id="程序与页面"><a href="#程序与页面" class="headerlink" title="程序与页面"></a>程序与页面</h3><p>我们可以观察到<code>pages/logs/logs</code>下其实是包括了4种文件的，微信客户端会现根据<code>logs.json</code>配置生产一个界面，顶部的颜色和文字都可以在这个json文件中定义好。紧接着客户端就会装置这个页面的 WXML 结构和 WXSS 样式。最后客户端会装在<code>logs.js</code>，你可以看到<code>logs.js</code>的大体内容就是:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">Page(&#123;</div><div class="line">  data: &#123; <span class="comment">// 参与页面渲染的数据</span></div><div class="line">    logs: []</div><div class="line">  &#125;,</div><div class="line">  onLoad: <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">// 页面渲染后 执行</span></div><div class="line">  &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
 <p><code>Page</code>是一个页面构造器，这个构造器就生成了一个页面。在生成页面的时候，小程序框架会结合<code>data</code>数据和<code>index.wxml</code>一起渲染出最终的结构，于是就看到了你看到的小程序的样子。在渲染完界面之后，页面实例就会收到一个<code>onLoad</code>的回调，你可以在这个回调里处理你的逻辑。</p>
 <h3 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h3><p>小程序提供了丰富的基础组件给开发者，开发者可以像搭积木一样，组合各种组件拼成自己的小程序。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>为了让开发者可以很方便的调起微信提供的能力，例如获取用户信息、微信支付等等，小程序提供了很多 API 给开发者去使用。</p>
+<p>获取地理位置:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">wx.getLocation(&#123;</div><div class="line">    type: <span class="string">'wgs84'</span>,</div><div class="line">    success: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        <span class="keyword">var</span> latitude = res.latitude</div><div class="line">        <span class="keyword">var</span> longtitude = res.longtitude</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<p>调用微信扫一扫:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">wx.scanCode(&#123;</div><div class="line">    success: <span class="function">(<span class="params">res</span>) =&gt;</span> &#123;</div><div class="line">        <span class="built_in">console</span>.log(res)</div><div class="line">    &#125;</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
 
           
         
@@ -743,16 +1355,16 @@
       
         
           
-            <h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><p>React非常的灵活，你可以在许多项目中都使用它。你可以利用它创建新的app，你也可以逐渐地将它引入一个已有的代码库，而不用进行重写。</p>
+            <h1 id="React-文档翻译"><a href="#React-文档翻译" class="headerlink" title="React 文档翻译"></a>React 文档翻译</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>React非常的灵活，你可以在许多项目中都使用它。你可以利用它创建新的app，你也可以逐渐地将它引入一个已有的代码库，而不用进行重写。</p>
 <p>以下是一些我们开始的途径:</p>
 <ul>
 <li>尝试React</li>
 <li>创建一个新的App</li>
 <li>将React加入现有的App</li>
 </ul>
-<h2 id="尝试React"><a href="#尝试React" class="headerlink" title="尝试React"></a>尝试React</h2><p>如果你只是想随便玩玩React，那么你可以使用<a href="https://codepen.io/" target="_blank" rel="external">CodePen</a>，你可以尝试以这个简单的<a href="http://codepen.io/gaearon/pen/rrpgNB?editors=0010" target="_blank" rel="external">Hello World</a>小程序作为开始。你不需要安装任何东西，直接试着修改它，看看运行结果就行了。</p>
+<h3 id="尝试React"><a href="#尝试React" class="headerlink" title="尝试React"></a>尝试React</h3><p>如果你只是想随便玩玩React，那么你可以使用<a href="https://codepen.io/" target="_blank" rel="external">CodePen</a>，你可以尝试以这个简单的<a href="http://codepen.io/gaearon/pen/rrpgNB?editors=0010" target="_blank" rel="external">Hello World</a>小程序作为开始。你不需要安装任何东西，直接试着修改它，看看运行结果就行了。</p>
 <hr>
-<h2 id="创建一个新的App"><a href="#创建一个新的App" class="headerlink" title="创建一个新的App"></a>创建一个新的App</h2><p><a href="https://github.com/facebookincubator/create-react-app" target="_blank" rel="external">Create React App</a>是创建一个新的React单页应用的最好的方式。它可以帮你搭建你的开发环境，这样你就可以使用那些最新的Javascript特性了。它提供了非常棒的开发体验，并且会优化你的最终生产版本。<br>PS: 你需要安装<a href="https://nodejs.org/" target="_blank" rel="external">Node.js</a>，并且版本&gt;=6。</p>
+<h3 id="创建一个新的App"><a href="#创建一个新的App" class="headerlink" title="创建一个新的App"></a>创建一个新的App</h3><p><a href="https://github.com/facebookincubator/create-react-app" target="_blank" rel="external">Create React App</a>是创建一个新的React单页应用的最好的方式。它可以帮你搭建你的开发环境，这样你就可以使用那些最新的Javascript特性了。它提供了非常棒的开发体验，并且会优化你的最终生产版本。<br>PS: 你需要安装<a href="https://nodejs.org/" target="_blank" rel="external">Node.js</a>，并且版本&gt;=6。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">npm install -g create-react-app</div><div class="line">create-react-app my-app</div><div class="line"></div><div class="line"><span class="built_in">cd</span> my-app</div><div class="line">npm start</div></pre></td></tr></table></figure>
 <p>Create React App并不处理后端逻辑或者数据库，它仅仅创建了一个前端的构建pipeline，所以你可以结合任何的后端技术来使用它。它在底层使用了<a href="http://babeljs.io/" target="_blank" rel="external">Babel</a>以及<a href="https://webpack.js.org/" target="_blank" rel="external">Webpack</a>这样的构建工具，但是并不需要你做任何额外的配置。</p>
 <p>当你准备好将App部署到生产环境时，你可以运行<code>npm run build</code>来在<code>build</code>文件夹中创建一个优化过的版本。你可以通过以下链接学习更多关于Create React App的知识:</p>
@@ -761,7 +1373,7 @@
 <li><a href="https://github.com/facebookincubator/create-react-app/blob/master/packages/react-scripts/template/README.md#table-of-contents" target="_blank" rel="external">用户指南</a></li>
 </ol>
 <hr>
-<h2 id="将React加入现有的App"><a href="#将React加入现有的App" class="headerlink" title="将React加入现有的App"></a>将React加入现有的App</h2><p>要开始使用React，你不必重写你的应用程序。</p>
+<h3 id="将React加入现有的App"><a href="#将React加入现有的App" class="headerlink" title="将React加入现有的App"></a>将React加入现有的App</h3><p>要开始使用React，你不必重写你的应用程序。</p>
 <p>我们建议将React加入到你的应用的某个小部分中去，例如一个独立的小控件，这样你可以知道它是否能很好的配合你的应用。</p>
 <p>虽然React可以脱离build pipeline而使用，但是我们强烈推荐你能搭建这样一个环境，这会使你变得更加高效。如今典型的build pipeline包含了以下的几个部分:</p>
 <ul>
@@ -769,17 +1381,20 @@
 <li>模块打包器(bundler): 例如<a href="https://webpack.js.org/" target="_blank" rel="external">webpack</a>或者<a href="http://browserify.org/" target="_blank" rel="external">Browserify</a>，它使你可以写出模块化的代码，并且将它们整合到一个个小的包中去，来优化载入时间。</li>
 <li>编译器(compiler): 例如<a href="http://babeljs.io/" target="_blank" rel="external">Babel</a>，它使得你写的最新的Javascript也能运行在旧的浏览器上。</li>
 </ul>
-<h3 id="安装React"><a href="#安装React" class="headerlink" title="安装React"></a>安装React</h3><p>我们推荐使用Yarn或者npm来管理前端的依赖。如果你刚刚接触包管理器，那么<a href="https://yarnpkg.com/en/docs/getting-started" target="_blank" rel="external">Yarn的文档</a>将会是一个比较好的学习材料。</p>
-<p>要使用Yarn安装React，执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yarn init</div><div class="line">yarn add react react-dom</div></pre></td></tr></table></figure></p>
-<p>要使用npm安装React，执行以下命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm init</div><div class="line">npm install --save react react-dom</div></pre></td></tr></table></figure></p>
+<h4 id="安装Rea"><a href="#安装Rea" class="headerlink" title="安装Rea"></a>安装Rea</h4><p>我们推荐使用Yarn或者npm来管理前端的依赖。如果你刚刚接触包管理器，那么<a href="https://yarnpkg.com/en/docs/getting-started" target="_blank" rel="external">Yarn的文档</a>将会是一个比较好的学习材料。</p>
+<p>要使用Yarn安装React，执行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yarn init</div><div class="line">yarn add react react-dom</div></pre></td></tr></table></figure>
+<p>要使用npm安装React，执行以下命令:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">npm init</div><div class="line">npm install --save react react-dom</div></pre></td></tr></table></figure>
 <p>PS: Yarn和npm都是从npm的网站那里下载包的。</p>
-<h3 id="激活ES6以及JSX"><a href="#激活ES6以及JSX" class="headerlink" title="激活ES6以及JSX"></a>激活ES6以及JSX</h3><p>我们推荐结合Babel使用React，这使得你可以在Javascript代码中使用ES6以及JSX。ES6是一套新的Javascript标准，它使得开发更加简洁。JSX是Javascript一个扩展，它可以与React配合的非常完美。</p>
+<h4 id="激活ES6以及JSX"><a href="#激活ES6以及JSX" class="headerlink" title="激活ES6以及JSX"></a>激活ES6以及JSX</h4><p>我们推荐结合Babel使用React，这使得你可以在Javascript代码中使用ES6以及JSX。ES6是一套新的Javascript标准，它使得开发更加简洁。JSX是Javascript一个扩展，它可以与React配合的非常完美。</p>
 <p><a href="https://babeljs.io/docs/setup/" target="_blank" rel="external">Babel安装说明</a>解释了如何在不同的构建环境中配置Babel，你需要确保你安装了<a href="http://babeljs.io/docs/plugins/preset-react/#basic-setup-with-the-cli-" target="_blank" rel="external">babel-preset-react</a>以及<a href="http://babeljs.io/docs/plugins/preset-env/" target="_blank" rel="external">babel-preset-env</a>，并且在你的<a href="http://babeljs.io/docs/usage/babelrc/" target="_blank" rel="external">.babelrc配置文件</a>中激活了它们，这样你就可以继续了。</p>
-<h3 id="使用ES6和JSX的Hello-World"><a href="#使用ES6和JSX的Hello-World" class="headerlink" title="使用ES6和JSX的Hello World"></a>使用ES6和JSX的Hello World</h3><p>我们推荐你使用webpack或者Browserify，这样你可以写出模块化的代码，并且将它们整合到一个个小的包中去，来优化载入时间。</p>
-<p>最简单的React例子就像这样:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h4 id="使用ES6和JSX的Hello-World"><a href="#使用ES6和JSX的Hello-World" class="headerlink" title="使用ES6和JSX的Hello World"></a>使用ES6和JSX的Hello World</h4><p>我们推荐你使用webpack或者Browserify，这样你可以写出模块化的代码，并且将它们整合到一个个小的包中去，来优化载入时间。</p>
+<p>最简单的React例子就像这样:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> React <span class="keyword">from</span> <span class="string">'react'</span>;</div><div class="line"><span class="keyword">import</span> ReactDom <span class="keyword">from</span> <span class="string">'react-dom'</span>;</div><div class="line"></div><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
 <p>这段代码渲染了一个id为<code>root</code>的DOM元素，所以你需要在你的HTML文件某处添加这样的一行代码: <code>&lt;div id=&quot;root&quot;&gt;&lt;/div&gt;</code>。</p>
 <p>相似地，你也可以使用React渲染你使用其他Javascript UI库写的现有App中的DOM元素。</p>
-<h3 id="开发版本与生产版本"><a href="#开发版本与生产版本" class="headerlink" title="开发版本与生产版本"></a>开发版本与生产版本</h3><p>默认情况下，React包含了许多有用的警告。这些警告在开发过程中十分有用。</p>
+<h4 id="开发版本与生产版本"><a href="#开发版本与生产版本" class="headerlink" title="开发版本与生产版本"></a>开发版本与生产版本</h4><p>默认情况下，React包含了许多有用的警告。这些警告在开发过程中十分有用。</p>
 <p>但是，它们使得React的开发版本(development version)过大也过慢，所以在部署时，你需要使用生产版本(production version)。</p>
 <p>了解如何辨别你的网站正使用正确版本的React，并且通过以下途径有效地配置生产build过程:</p>
 <ul>
@@ -790,62 +1405,107 @@
 <li><a href="https://reactjs.org/docs/optimizing-performance.html#rollup" target="_blank" rel="external">使用Rollup</a></li>
 <li><a href="https://reactjs.org/docs/optimizing-performance.html#webpack" target="_blank" rel="external">使用webpack</a></li>
 </ul>
-<h3 id="使用CDN"><a href="#使用CDN" class="headerlink" title="使用CDN"></a>使用CDN</h3><p>如果你不想要使用npm来管理客户端的包，<code>react</code>和<code>react-dom</code>也提供了CDN的版本:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@16/umd/react.development.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@16/umd/react-dom.development.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>上面的版本是用来为开发服务的，并不适合生产版本，简化并优化过的版本可以通过以下链接获得:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@16/umd/react.production.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h4 id="使用CDN"><a href="#使用CDN" class="headerlink" title="使用CDN"></a>使用CDN</h4><p>如果你不想要使用npm来管理客户端的包，<code>react</code>和<code>react-dom</code>也提供了CDN的版本:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@16/umd/react.development.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@16/umd/react-dom.development.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>上面的版本是用来为开发服务的，并不适合生产版本，简化并优化过的版本可以通过以下链接获得:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react@16/umd/react.production.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>如果需要加载特定版本的<code>react</code>和<code>react-dom</code>，可以用版本号替换掉链接中的<code>16</code>。</p>
 <p>如果你是使用Bower的，那么React可以通过<code>react</code>包获得。</p>
-<h4 id="为什么需要crossorigin属性？"><a href="#为什么需要crossorigin属性？" class="headerlink" title="为什么需要crossorigin属性？"></a>为什么需要crossorigin属性？</h4><p>如果你通过CDN来使用React，那么我们推荐你将crossorigin属性按照如下设置:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"..."</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h4 id="为什么需要crossorigin属性？"><a href="#为什么需要crossorigin属性？" class="headerlink" title="为什么需要crossorigin属性？"></a>为什么需要crossorigin属性？</h4><p>如果你通过CDN来使用React，那么我们推荐你将crossorigin属性按照如下设置:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">crossorigin</span> <span class="attr">src</span>=<span class="string">"..."</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>我们也推荐你检验你所使用的CDN设置了<code>Access-Control-Allow-Origin: *</code>的HTTP header:<br><img src="https://reactjs.org/static/89baed0a6540f29e954065ce04661048-5447f.png" alt=""></p>
 <p>这使得你在使用React 16或以后的版本的时候会有一个更好的错误处理的体验。</p>
-<h1 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h1><p>开始学习React的最简单的方法就是使用我们在CodePen上给出的这个<a href="http://codepen.io/gaearon/pen/ZpvBNJ?editors=0010" target="_blank" rel="external">Hello World Example</a>。你不需要安装任何东西，你只要在另一个标签页中打开它，并且跟着我们一起研究这个例子就可以了。如果你还是想使用一个本地的开发环境，请查看上一章的具体内容。</p>
-<p>最简单的React example就像下面这样👇:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h2 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h2><p>开始学习React的最简单的方法就是使用我们在CodePen上给出的这个<a href="http://codepen.io/gaearon/pen/ZpvBNJ?editors=0010" target="_blank" rel="external">Hello World Example</a>。你不需要安装任何东西，你只要在另一个标签页中打开它，并且跟着我们一起研究这个例子就可以了。如果你还是想使用一个本地的开发环境，请查看上一章的具体内容。</p>
+<p>最简单的React example就像下面这样👇:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDom.render(</div><div class="line">  &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
 <p>这段代码渲染了一个内容为“Hello, world!”的标题。</p>
 <p>接下来的几个部分将逐渐地引导你开始使用React。我们将会深入研究React应用的基础构建单元: 元素(elements)和组件(components)。一旦你掌握了它们，你就可以使用这些可复用的小“砖瓦”来构建复杂的应用程序了。</p>
 <hr>
-<h2 id="关于Javascript的小提示"><a href="#关于Javascript的小提示" class="headerlink" title="关于Javascript的小提示"></a>关于Javascript的小提示</h2><p>React是一个Javascript库，所以这假设你对Javascript语言有一个基本的理解。如果你感觉自己并不是那么自信，那么你可以参考这个教程，这样你就可以更轻松地跟上我们的节奏了。</p>
+<h3 id="关于Javascript的小提示"><a href="#关于Javascript的小提示" class="headerlink" title="关于Javascript的小提示"></a>关于Javascript的小提示</h3><p>React是一个Javascript库，所以这假设你对Javascript语言有一个基本的理解。如果你感觉自己并不是那么自信，那么你可以参考这个教程，这样你就可以更轻松地跟上我们的节奏了。</p>
 <p>我们也将在例子中使用一些ES6语句，我们会试着用保守一点的方式去使用它，因为它相对来说还是比较新的，但是我们鼓励你熟悉一下这些知识: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions" target="_blank" rel="external">箭头函数</a>，<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes" target="_blank" rel="external">类</a>，<a href="https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals" target="_blank" rel="external">模板字符串</a>，<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/let" target="_blank" rel="external">let</a>，<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/const" target="_blank" rel="external">const</a>。</p>
-<h1 id="JSX简介"><a href="#JSX简介" class="headerlink" title="JSX简介"></a>JSX简介</h1><p>观察下面的变量声明方式:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure></p>
+<h2 id="JSX简介"><a href="#JSX简介" class="headerlink" title="JSX简介"></a>JSX简介</h2><p>观察下面的变量声明方式:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure>
 <p>这个有趣的标签既不是字符串也不是HTML。</p>
 <p>这样的语句叫做JSX，是Javascript的一个句法扩展。我们推荐结合React使用它来描述UI应该呈现的样子。JSX也许会让你联想到一个模板语言，不过它是拥有完整的Javascript功能的。</p>
 <p>JSX产生了React “elements”，我们将会在下一节探索它们是如何被渲染为DOM的。下面的内容，可以让你学到JSX的基础知识，让你快速起步。</p>
-<h2 id="在JSX中嵌入表达式"><a href="#在JSX中嵌入表达式" class="headerlink" title="在JSX中嵌入表达式"></a>在JSX中嵌入表达式</h2><p>你可以通过将代码包裹在花括号内，在JSX中嵌入任何的Javascript表达式。</p>
-<p>比方说，<code>2+2</code>，<code>user.firstName</code>，或者<code>formatName(user)</code>都是有效的表达式:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatName</span>(<span class="params">user</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> user.firstName + <span class="string">' '</span> + user.lastName;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> user = &#123;</div><div class="line">  firstName: <span class="string">'Louis'</span>,</div><div class="line">  lastName: <span class="string">'Melo'</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;h1&gt;</div><div class="line">    Hello, &#123;formatName(user)&#125;!</div><div class="line">  &lt;<span class="regexp">/h1&gt;</span></div><div class="line"><span class="regexp">);</span></div><div class="line"><span class="regexp"></span></div><div class="line"><span class="regexp">ReactDOM.render(</span></div><div class="line"><span class="regexp">  element,</span></div><div class="line"><span class="regexp">  document.getElementById('root')</span></div><div class="line"><span class="regexp">);</span></div></pre></td></tr></table></figure></p>
+<h3 id="在JSX中嵌入表达式"><a href="#在JSX中嵌入表达式" class="headerlink" title="在JSX中嵌入表达式"></a>在JSX中嵌入表达式</h3><p>你可以通过将代码包裹在花括号内，在JSX中嵌入任何的Javascript表达式。</p>
+<p>比方说，<code>2+2</code>，<code>user.firstName</code>，或者<code>formatName(user)</code>都是有效的表达式:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">formatName</span>(<span class="params">user</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> user.firstName + <span class="string">' '</span> + user.lastName;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> user = &#123;</div><div class="line">  firstName: <span class="string">'Louis'</span>,</div><div class="line">  lastName: <span class="string">'Melo'</span></div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;h1&gt;</div><div class="line">    Hello, &#123;formatName(user)&#125;!</div><div class="line">  &lt;<span class="regexp">/h1&gt;</span></div><div class="line"><span class="regexp">);</span></div><div class="line"><span class="regexp"></span></div><div class="line"><span class="regexp">ReactDOM.render(</span></div><div class="line"><span class="regexp">  element,</span></div><div class="line"><span class="regexp">  document.getElementById('root')</span></div><div class="line"><span class="regexp">);</span></div></pre></td></tr></table></figure>
 <p>我们将JSX分成了好几行来提高了它的可阅读性。虽然这不是必要的，但是当这样做的时候，我们也推荐你使用括号将它包裹住，防止 <strong>自动补全分号</strong> 的陷阱。</p>
-<h2 id="JSX也是一个表达式"><a href="#JSX也是一个表达式" class="headerlink" title="JSX也是一个表达式"></a>JSX也是一个表达式</h2><p>在编译过后，JSX表达式会变成正常的Javascript对象。</p>
-<p>这意味着，你可以在<code>if</code>语句以及<code>for</code>循环中使用JSX，并可以将它赋值给变量，将它作为参数接收，也可以通过方法返回它:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGreeting</span>(<span class="params">user</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (user) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;formatName(user)&#125;!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, Stranger.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="使用JSX声明属性"><a href="#使用JSX声明属性" class="headerlink" title="使用JSX声明属性"></a>使用JSX声明属性</h2><p>你可以使用引号来将字符文字声明为属性:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">tabIndex</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</div></pre></td></tr></table></figure></p>
-<p>你也可以使用花括号来嵌入Javascript表达式作为属性:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;user.avatarUrl&#125;</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span>;</div></pre></td></tr></table></figure></p>
+<h3 id="JSX也是一个表达式"><a href="#JSX也是一个表达式" class="headerlink" title="JSX也是一个表达式"></a>JSX也是一个表达式</h3><p>在编译过后，JSX表达式会变成正常的Javascript对象。</p>
+<p>这意味着，你可以在<code>if</code>语句以及<code>for</code>循环中使用JSX，并可以将它赋值给变量，将它作为参数接收，也可以通过方法返回它:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getGreeting</span>(<span class="params">user</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span> (user) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;formatName(user)&#125;!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, Stranger.<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="使用JSX声明属性"><a href="#使用JSX声明属性" class="headerlink" title="使用JSX声明属性"></a>使用JSX声明属性</h2><p>你可以使用引号来将字符文字声明为属性:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">div</span> <span class="attr">tabIndex</span>=<span class="string">"0"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span>;</div></pre></td></tr></table></figure>
+<p>你也可以使用花括号来嵌入Javascript表达式作为属性:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;user.avatarUrl&#125;</span>&gt;</span><span class="tag">&lt;/<span class="name">img</span>&gt;</span></span>;</div></pre></td></tr></table></figure>
 <p>在使用Javascript表达式和花括号作为属性的时候，不要再添加引号。你应该使用这二者的其一，而不是同时使用它们两个。</p>
-<h2 id="使用JSX声明子节点-children"><a href="#使用JSX声明子节点-children" class="headerlink" title="使用JSX声明子节点(children)"></a>使用JSX声明子节点(children)</h2><p>如果一个标签是空标签，你可以直接以<code>/&gt;</code>作为结尾:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;user.avatarUrl&#125;</span> /&gt;</span>;</span></div></pre></td></tr></table></figure></p>
-<p>JSX标签也有可能包含子节点:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;div&gt;</div><div class="line">    &lt;h1&gt;Hello!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">    &lt;h2&gt;Good to see you here.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">  &lt;/</span>div&gt;</div><div class="line">);</div></pre></td></tr></table></figure></p>
-<h2 id="JSX防止注入攻击"><a href="#JSX防止注入攻击" class="headerlink" title="JSX防止注入攻击"></a>JSX防止注入攻击</h2><p>将用户输入嵌入在JSX是非常安全的:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> title = response.potentiallyMaliciousInput;</div><div class="line"><span class="comment">// This is safe:</span></div><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;title&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure></p>
+<h3 id="使用JSX声明子节点-children"><a href="#使用JSX声明子节点-children" class="headerlink" title="使用JSX声明子节点(children)"></a>使用JSX声明子节点(children)</h3><p>如果一个标签是空标签，你可以直接以<code>/&gt;</code>作为结尾:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&#123;user.avatarUrl&#125;</span> /&gt;</span>;</span></div></pre></td></tr></table></figure>
+<p>JSX标签也有可能包含子节点:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;div&gt;</div><div class="line">    &lt;h1&gt;Hello!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">    &lt;h2&gt;Good to see you here.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">  &lt;/</span>div&gt;</div><div class="line">);</div></pre></td></tr></table></figure>
+<h3 id="JSX防止注入攻击"><a href="#JSX防止注入攻击" class="headerlink" title="JSX防止注入攻击"></a>JSX防止注入攻击</h3><p>将用户输入嵌入在JSX是非常安全的:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> title = response.potentiallyMaliciousInput;</div><div class="line"><span class="comment">// This is safe:</span></div><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>&#123;title&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure>
 <p>默认情况下，React DOM在渲染之前就会（？？？）任何嵌套在JSX中的值，因此它保证了你永远不能注入任何没有在你的应用中显示声明的代码。一切都会在渲染之前被转换成字符串，这也有效阻止了<a href="https://en.wikipedia.org/wiki/Cross-site_scripting" target="_blank" rel="external">XSS攻击(cross-site-scripting)</a>。</p>
-<h2 id="JSX意味着对象"><a href="#JSX意味着对象" class="headerlink" title="JSX意味着对象"></a>JSX意味着对象</h2><p>Babel将JSX编译为对<code>React.createElement()</code>方法的调用。</p>
-<p>下面的这两个例子是完全一致的:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;h1 className=<span class="string">"greeting"</span>&gt;</div><div class="line">    Hello, world!</div><div class="line">  &lt;<span class="regexp">/h1&gt;</span></div><div class="line"><span class="regexp">);</span></div></pre></td></tr></table></figure></p>
+<h3 id="JSX意味着对象"><a href="#JSX意味着对象" class="headerlink" title="JSX意味着对象"></a>JSX意味着对象</h3><p>Babel将JSX编译为对<code>React.createElement()</code>方法的调用。</p>
+<p>下面的这两个例子是完全一致的:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = (</div><div class="line">  &lt;h1 className=<span class="string">"greeting"</span>&gt;</div><div class="line">    Hello, world!</div><div class="line">  &lt;<span class="regexp">/h1&gt;</span></div><div class="line"><span class="regexp">);</span></div></pre></td></tr></table></figure>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = React.createElement(</div><div class="line">  <span class="string">'h1'</span>,</div><div class="line">  &#123;<span class="attr">className</span>: <span class="string">'greeting'</span>&#125;,</div><div class="line">  <span class="string">'Hello, world!'</span></div><div class="line">);</div></pre></td></tr></table></figure>
-<p><code>React.createElement()</code>帮助你执行了一些bug检查，但是更重要的是，它创建了如下的一个对象:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注意：这个结构已被简化</span></div><div class="line"><span class="keyword">const</span> element = &#123;</div><div class="line">  type: <span class="string">'h1'</span>,</div><div class="line">  props: &#123;</div><div class="line">    className: <span class="string">'greeting'</span>,</div><div class="line">    children: <span class="string">'Hello, world!'</span></div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure></p>
+<p><code>React.createElement()</code>帮助你执行了一些bug检查，但是更重要的是，它创建了如下的一个对象:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 注意：这个结构已被简化</span></div><div class="line"><span class="keyword">const</span> element = &#123;</div><div class="line">  type: <span class="string">'h1'</span>,</div><div class="line">  props: &#123;</div><div class="line">    className: <span class="string">'greeting'</span>,</div><div class="line">    children: <span class="string">'Hello, world!'</span></div><div class="line">  &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
 <p>这样的对象被称为“React elements”。你可以将它们认作是对于你想要在屏幕上看到的东西的描述。React会读取这些对象，然后用它们来构建DOM，并且保持它们的状态更新。</p>
 <p>我们将在下一节研究如何将React elements渲染到DOM。</p>
 <blockquote>
 <p><strong>Tip:</strong><br>在Atom编辑器中，可以搜索language-babel来使得编辑器支持对于ES6和JSX的高亮显示。</p>
 </blockquote>
-<h1 id="渲染元素"><a href="#渲染元素" class="headerlink" title="渲染元素"></a>渲染元素</h1><p>元素是React Apps的最小构建单元。</p>
-<p>一个元素描述了你想要在屏幕上看到的东西:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure></p>
+<h2 id="渲染元素"><a href="#渲染元素" class="headerlink" title="渲染元素"></a>渲染元素</h2><p>元素是React Apps的最小构建单元。</p>
+<p>一个元素描述了你想要在屏幕上看到的东西:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world!<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div></pre></td></tr></table></figure>
 <p>与浏览器DOM元素不同的是，React elements就是普通的对象，其创建也十分简单。React DOM关心的是更新DOM以匹配React elements。</p>
 <p>请注意: 这里有可能会造成与“components”概念的混淆，我们将在下一节介绍components，elements其实是构成components的东西。</p>
 <hr>
-<h2 id="将元素渲染进DOM中"><a href="#将元素渲染进DOM中" class="headerlink" title="将元素渲染进DOM中"></a>将元素渲染进DOM中</h2><p>假定有一个<code>&lt;div&gt;</code>在你的HTML文件的某处吧:<br><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure></p>
+<h3 id="将元素渲染进DOM中"><a href="#将元素渲染进DOM中" class="headerlink" title="将元素渲染进DOM中"></a>将元素渲染进DOM中</h3><p>假定有一个<code>&lt;div&gt;</code>在你的HTML文件的某处吧:</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"root"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div></pre></td></tr></table></figure>
 <p>我们将这个称为一个“root” DOM节点，因为它其中的所有东西都将由React DOM管理。</p>
 <p>只用React构建的应用通常只有一个单一的根DOM节点。如果你是将React整合进一个已有的app，那么你可以有任意多个隔离的根DOM节点。</p>
-<p>要渲染一个React element为一个根DOM节点，需要将两者都传递给<code>ReactDOM.render()</code>方法:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">ReactDOM.render(</div><div class="line">  element,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>要渲染一个React element为一个根DOM节点，需要将两者都传递给<code>ReactDOM.render()</code>方法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, world<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">ReactDOM.render(</div><div class="line">  element,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
 <hr>
-<h2 id="更新被渲染的元素"><a href="#更新被渲染的元素" class="headerlink" title="更新被渲染的元素"></a>更新被渲染的元素</h2><p>React elements是无法修改的(immutable)。一旦你创建了一个元素，你就不能改变它的子节点或是属性。一个元素就像一部电影里的单独一帧: 它代表了某个特定时间点的用户界面。</p>
+<h3 id="更新被渲染的元素"><a href="#更新被渲染的元素" class="headerlink" title="更新被渲染的元素"></a>更新被渲染的元素</h3><p>React elements是无法修改的(immutable)。一旦你创建了一个元素，你就不能改变它的子节点或是属性。一个元素就像一部电影里的单独一帧: 它代表了某个特定时间点的用户界面。</p>
 <p>根据我们到目前为止学到的知识，更新用户界面的唯一方法是: 创建一个新的元素并将它传递给<code>ReactDOM.render()</code>方法。</p>
-<p>思考下面这个时钟的例子:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> element = (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;h2&gt;It is &#123;<span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;</div><div class="line">  );</div><div class="line">  ReactDOM.render(</div><div class="line">    element,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line">setInterval(tick, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>思考下面这个时钟的例子:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> element = (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;h2&gt;It is &#123;<span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;</div><div class="line">  );</div><div class="line">  ReactDOM.render(</div><div class="line">    element,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line">setInterval(tick, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
 <p>每隔一秒钟，<code>setInterval()</code>的回调方法就会调用一次<code>ReactDOM.render()</code>方法。</p>
 <p>注意，在实践中，大多数的React apps都只调用一次<code>ReactDOM.render()</code>方法，在下一节我们将会学习这些代码是如何被封装(encapsulated)到有状态的components中去的。</p>
 <hr>
-<h2 id="React只会进行有必要的更新"><a href="#React只会进行有必要的更新" class="headerlink" title="React只会进行有必要的更新"></a>React只会进行有必要的更新</h2><p>React DOM</p>
+<h3 id="React只会进行有必要的更新"><a href="#React只会进行有必要的更新" class="headerlink" title="React只会进行有必要的更新"></a>React只会进行有必要的更新</h3><p>React DOM会将元素及其子节点与之前的相比较，并且只会对DOM进行有必要的更新，将DOM变到所需要的状态。</p>
+<p>这一点，你可以从上一个例子中看出来，利用浏览器工具，尽管我们每隔一秒都创建一个描述整个UI树的元素，但是只有内容因更新DOM而发生改变的文本节点发生了变化。</p>
+<p>根据我们的经验，相比于思考如何随着时间改变UI，思考在给定时刻UI所要呈现的样子会消除非常多的bug。</p>
+<h2 id="Components-and-Props"><a href="#Components-and-Props" class="headerlink" title="Components and Props"></a>Components and Props</h2><p>Components使你能够将UI分成独立且可重复利用的小块，并且独立地思考每一小块UI。</p>
+<p>从概念上讲，components就像是JavaScript中的方法，它们能够接受任意的输入（这里被称为props），并且返回描述了在屏幕上呈现何物的React elements。</p>
+<hr>
+<h3 id="Functional-and-Class-Components"><a href="#Functional-and-Class-Components" class="headerlink" title="Functional and Class Components"></a>Functional and Class Components</h3><p>定义一个component的最简单的方法就是编写一个Javascript方法:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Welcome</span>(<span class="params">props</span>)</span>&#123;</div><div class="line">  retrun &lt;h1&gt;Hello, &#123;props.name&#125;&lt;<span class="regexp">/h1&gt;;</span></div><div class="line"><span class="regexp">&#125;</span></div></pre></td></tr></table></figure>
+<p>这个方法就是一个有效的React component，因为它接受了一个单独的props，并且返回了一个React element，我们将这种组件叫做方法性组件（functional components），因为它在字面上就是一个JavaScript方法。</p>
+<p>你也可以使用一个<code>ES6 Class</code>来顶一个component:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Welcome</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;this.props.name&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>从React的视角来看，以上的两个components是同等的。</p>
+<p>Classes具有一些额外的特性，我们将在下一章进行讨论。在那之前，我们将使用functional components，因为它比较简单明了。</p>
+<hr>
+<h3 id="Rendering-a-component"><a href="#Rendering-a-component" class="headerlink" title="Rendering a component"></a>Rendering a component</h3><p>之前，我们只碰到过表示DOM标签的React elements:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">div</span> /&gt;</span>;</span></div></pre></td></tr></table></figure>
+<p>然而，elements也可以表示用户定义的components:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">Welcome</span> <span class="attr">name</span>=<span class="string">"Snow"</span> /&gt;</span>;</span></div></pre></td></tr></table></figure>
+<p>当React见到一个表示用户定义的componet的element时，它就将JSX的属性以一个单独的对象传递给这个component，我们将这个对象叫做props。</p>
+<p>举个例子，这段代码将会打印 Hello, snow:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Welcome</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h1</span>&gt;</span>Hello, &#123;props.name&#125;<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> element = <span class="xml"><span class="tag">&lt;<span class="name">Welcome</span> <span class="attr">name</span>=<span class="string">"snow"</span> /&gt;</span>;</span></div><div class="line"><span class="xml">ReactDOM.render(</span></div><div class="line"><span class="xml">  element,</span></div><div class="line"><span class="xml">  document.getElementById('root')</span></div><div class="line"><span class="xml">);</span></div></pre></td></tr></table></figure>
+<p>让我们重新看一下这个例子中发生了什么:</p>
+<ol>
+<li>我们使用 <code>&lt;Welcome name=&quot;snow&quot; /&gt;</code> 这个元素，调用了 <code>ReactDOM.render()</code> 方法</li>
+<li>React以 <code>{name: &#39;snow&#39;}</code> 作为props，调用了 <code>Welcome</code> 组件</li>
+<li>我们的 <code>Welcome</code> 组件返回了 <code>&lt;h1&gt;Hello, snow&lt;/h1&gt;</code> 元素作为结果</li>
+<li>ReactDOM快速地更新了DOM</li>
+</ol>
 
           
         
@@ -1324,607 +1984,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/10/10/理财知识整理（Sept-）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/10/理财知识整理（Sept-）/" itemprop="url">理财知识整理（Sept.）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T16:29:48+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/理财/" itemprop="url" rel="index">
-                    <span itemprop="name">理财</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h3 id="9-30"><a href="#9-30" class="headerlink" title="9.30"></a>9.30</h3><p>人要活在当下，不要活在过去，过去的已经无法改变，也不要为了未来而活，因为你不知道明天和意外哪个先来。要想成功，就努力做好今天的事，把握好当下的每一分钟。<br>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/10/理财知识整理（Sept-）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/10/10/理财知识整理（一）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/10/理财知识整理（一）/" itemprop="url">理财知识整理（一）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-10T15:49:46+08:00">
-                2017-10-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/理财/" itemprop="url" rel="index">
-                    <span itemprop="name">理财</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>散户要想在股市上不赔钱、只要按下面3个简单的指标选股既可：1、造择5-10年净资产收益率达到15%以上的企业。2、净资产收益率除市净率高于15%；3、每年都保证能有有现金分红的企业。</p>
-<p>市盈率是企业利润对市场价格的比率、利润是可以调节的而市场价格是随时波动的、市净率是企业净资产对比市场价格、而企业的净资产则要稳定的多、也不容易做手脚、所以在估值上市净率是比较靠谱的，另外在股市上只有净资产才是你真实的不含水份的股权资产、在不卖出股权长期持股的情况下市值只能算是泡沫！</p>
-<p>2008年美国金融风暴中影响中，有股评家有理有据、言之凿凿说2007年业绩是未来银行的天花板，未来将不断走下坡路，不排除再一次需要政府救援过难关。这一开头，看空银行业评论席卷华夏大地、愈演愈烈，经久不衰，让众多股评家们趋之若蚁，大有不唱空银行不懂经济、不懂股市之嫌疑，全社会唱空、唱衰银行股之势至今已延续9年之久，估计还将发酵下去。 殊不知，这八年来兴业银行从07年净利润86亿元增长至2015年的535亿元，八年间增长6.23倍，年均增长25.70%；拨备前利润从07年126亿元增长至2015年1092亿元，八年间增长8.67倍，年均增长31.00%。此情此景，不知道那些坚持看空银行的股评家怎么看自己？“谎言千遍成真理”，银行股就是典型案例。</p>
-<p>1992年索罗斯大战英格兰央行的时候，他的基金经理人德鲁肯米勒认为这是一次难得的好机会，甚至建议把所有钱都押上，当他把这个想法告诉索罗斯的时候，索罗斯说这“太荒谬了……你知道这种事情多久才能出现一次吗？所以，要做的不是把所有的钱押上去，而是要把所有能搞到的钱，都押上去。”结果他们加上杠杆，总共投了100亿美金，最终大获全胜。</p>
-<p>巴菲特：“我从来没发现高等数学在投资中有什么作用，只要懂小学算术就足够了。如果高等数学是必需的，我就得回去送报纸了。”</p>
-<p>银行业从行业整体角度看，无论如何开放，它永远都会存在进入障碍——政府和监管机构不会无限制地提供自己的信用担保和无限流动性便利。这是天然的进入壁垒，保证了产业内部不会演化成恶性竞争。这门生意没有天花板，拥有自己的独特竞争优势且具备一定的进入壁垒。是个值得关注和投资的行业。——《手把手教你读财报2》</p>
-</blockquote>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/09/25/Node-js-Web开发（二）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/25/Node-js-Web开发（二）/" itemprop="url">Node.js Web开发（二）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-25T21:20:05+08:00">
-                2017-09-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>上一篇文章主要介绍了koa2的基本操作(坐下坐下)，但是每次都返回一样的HTML似乎也不可能，所以现在我们需要来处理URL了。</p>
-<p>直接来点高级点的东西，我们需要一个能处理URL的middleware，它叫做:<strong>koa-router</strong>:</p>
-<blockquote>
-<p>npm install koa-router</p>
-</blockquote>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> Koa = <span class="built_in">require</span>(<span class="string">'koa'</span>);</div><div class="line"></div><div class="line"><span class="keyword">const</span> router = <span class="built_in">require</span>(<span class="string">'koa-router'</span>)();</div><div class="line"></div><div class="line"><span class="keyword">const</span> app = Koa();</div><div class="line"></div><div class="line">router.get(<span class="string">'/hello/:name'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</div><div class="line">  <span class="keyword">var</span> name = ctx.params.name;</div><div class="line">  ctx.response.body = <span class="string">`&lt;h1&gt;Hello, &#123;$name&#125;!&lt;/h1&gt;`</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line">router.get(<span class="string">'/'</span>, <span class="keyword">async</span>(ctx, next) =&gt; &#123;</div><div class="line">  ctx.response.body = <span class="string">'&lt;h1&gt;Index Page&lt;/h1&gt;'</span>;</div><div class="line">&#125;);</div><div class="line"></div><div class="line"><span class="comment">// add router middleware</span></div><div class="line">app.use(router.routes());</div><div class="line"></div><div class="line">app.listen(<span class="number">3000</span>);</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'Server listen on port 3000...'</span>);</div></pre></td></tr></table></figure>
-<p>这里的代码，会在访问网址localhost:3000时返回Index Page，而在访问localhost:3000/hello/louis的时候，显示的就是Hello, louis!了，这样router就为我们达到了处理URL的功能。注意一下，在引入router的时候，是多一个括号的，这说明我们引入的router是一个对象，而前面Koa引入的其实是一个类(所以它被大写了~)。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/25/Node-js-Web开发（二）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/09/24/Node-js-Web开发（一）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/09/24/Node-js-Web开发（一）/" itemprop="url">Node.js Web开发（一）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-24T20:40:07+08:00">
-                2017-09-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>C/S架构是早期的软件架构，其特征是客户端运行在PC上，数据库运行在服务器上。但是随着互联网点兴起，人们发现C/S架构并不适合Web应用，因为Web应用的更新速度很快，迭代周期很短，而CS架构要求每次迭代都更新客户端，这太麻烦了，于是就有了B/S架构。</p>
-<p>Web开发经历的阶段:</p>
-<ul>
-<li>静态Web页面</li>
-<li>CGI(Common Gateway Interface，用C/C++编写的)</li>
-<li>ASP/JSP/PHP(脚本语言相比C/C++开发效率高)</li>
-<li>MVC(解决了直接用脚本嵌入HTML导致的可维护性差的问题)</li>
-<li>异步开发、MVVM…</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/09/24/Node-js-Web开发（一）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1978,7 +2037,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-count">16</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
