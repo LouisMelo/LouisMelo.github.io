@@ -232,6 +232,402 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/02/09/React笔记-State-and-Lifecycle/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/09/React笔记-State-and-Lifecycle/" itemprop="url">React笔记 - State and Lifecycle</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-09T22:30:42+08:00">
+                2018-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="State-and-Lifecycle"><a href="#State-and-Lifecycle" class="headerlink" title="State and Lifecycle"></a>State and Lifecycle</h1><p>直到现在，我们只学会了一种更新 UI 的方法，调用<code>ReactDOM.render()</code>来改变渲染出的组件。</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> element = (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;h2&gt;It is &#123;<span class="keyword">new</span> <span class="built_in">Date</span>().toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;</div><div class="line">  );</div><div class="line">  ReactDOM.render(</div><div class="line">    element,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line">setInterval(tick, <span class="number">1000</span>);</div></pre></td></tr></table></figure>
+<p>在这一节当中，我们将学习如何真正的封装<code>Clock</code>组件，并且让它变得可以重复使用。</p>
+<p>我们可以先把 clock 的样子封装一下，先将它的 DOM 结构构造出来：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Clock</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">      &lt;h2&gt;It is &#123;props.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">    &lt;/</span>div&gt;</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">tick</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;Clock date=&#123;<span class="keyword">new</span> <span class="built_in">Date</span>()&#125; /&gt;,</div><div class="line">    <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line">setInterval(tick, <span class="number">1000</span>);</div></pre></td></tr></table></figure></p>
+<p>然而，这样的做法遗漏了一个最重要的要求：就是我们需要将<code>Clock</code>设置定时器并更新UI的这些功能都在<code>Clock</code>内部实现，理想状态下，我们只需要写一次<code>Clock</code>组件，它就应该可以在其他地方使用，并且自己更新自己。<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDOM.render(</div><div class="line">  &lt;Clock /&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>为了实现它，我们需要给<code>Clock</code>组件添加”state”。</p>
+<blockquote>
+<p>State is similar to props, but it is private and fully controlled by the component.<br>state 与 props 相似，但是它是组件私有的，并且完全由组件控制。</p>
+</blockquote>
+<h2 id="之前提到过，class-component比functional-component要多一些特别的功能，state-就是其中之一。"><a href="#之前提到过，class-component比functional-component要多一些特别的功能，state-就是其中之一。" class="headerlink" title="之前提到过，class component比functional component要多一些特别的功能，state 就是其中之一。"></a>之前提到过，<code>class component</code>比<code>functional component</code>要多一些特别的功能，state 就是其中之一。</h2><h2 id="Converting-a-Function-to-Class"><a href="#Converting-a-Function-to-Class" class="headerlink" title="Converting a Function to Class"></a>Converting a Function to Class</h2><p>通过以下5个步骤，你可以将<code>Clock</code>这样的 function 改写成 class:</p>
+<ol>
+<li>用同样的名字，创建一个<code>ES6 class</code>，使其继承自<code>React.Component</code></li>
+<li>添加一个<code>render()</code>方法</li>
+<li>将 function 的主体全部复制到<code>render()</code>方法中</li>
+<li>将<code>render()</code>方法中的<code>this.props</code>全部替换成<code>props</code></li>
+<li>将之前声明的 function 删掉</li>
+</ol>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.props.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">      &lt;/</span>div&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="现在，Clock就从一个-function-变成了一个-class，它也具备了local-state和lifecycle-hooks的额外功能。"><a href="#现在，Clock就从一个-function-变成了一个-class，它也具备了local-state和lifecycle-hooks的额外功能。" class="headerlink" title="现在，Clock就从一个 function 变成了一个 class，它也具备了local state和lifecycle hooks的额外功能。"></a>现在，<code>Clock</code>就从一个 function 变成了一个 class，它也具备了<code>local state</code>和<code>lifecycle hooks</code>的额外功能。</h2><h2 id="Adding-Local-State-to-a-Class"><a href="#Adding-Local-State-to-a-Class" class="headerlink" title="Adding Local State to a Class"></a>Adding Local State to a Class</h2><p>通过以下的三个步骤，我们可以将<code>date</code>从 props 中移动到 state 里：</p>
+<ol>
+<li><p>将<code>render()</code>方法中的<code>this.props.date</code>替换为<code>this.state.date</code></p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">      &lt;/</span>div&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>添加一个<code>class constructor</code>指定初始时的<code>this.state</code>：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">      &lt;/</span>div&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>这里要注意我们是如何把<code>props</code>传递给父级构造函数的：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span>(props) &#123;</div><div class="line">  <span class="keyword">super</span>(props);</div><div class="line">  <span class="keyword">this</span>.state = &#123;<span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()&#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>class components 必须调用父级构造函数，并且将<code>props</code>作为参数传递给它。</p>
+<ol>
+<li>去掉<code>Clock</code>元素的<code>date</code>属性<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ReactDOM.render(</div><div class="line">  &lt;Clock /&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>我们等会再加上定时器的相关代码，现在，代码应该像是这样的：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">      &lt;/</span>div&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ReactDOM.render(</div><div class="line">  &lt;Clock /&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<h2 id="下面，我们将让Clock元素自己设定一个定时器，并且每秒钟更新一次。"><a href="#下面，我们将让Clock元素自己设定一个定时器，并且每秒钟更新一次。" class="headerlink" title="下面，我们将让Clock元素自己设定一个定时器，并且每秒钟更新一次。"></a>下面，我们将让<code>Clock</code>元素自己设定一个定时器，并且每秒钟更新一次。</h2><h2 id="Adding-Lifecycle-Methods-to-a-Class"><a href="#Adding-Lifecycle-Methods-to-a-Class" class="headerlink" title="Adding Lifecycle Methods to a Class"></a>Adding Lifecycle Methods to a Class</h2><p>在有许多的组件构成的应用中，有一点是很重要的，就是能在组件被销毁时释放它们所占用的资源。我们想要在每次<code>Clock</code>被渲染到DOM的时候，启动一个定时器，这在 React 中被称为”mounting”。同样，在由<code>Clock</code>渲染的DOM被移除时，我们也需要清除掉这个定时器，这在 React 中被称为”unmounting”。<br>在组件的类中，我们可以声明特殊的方法，这些代码会在组件”mount”和”unmount”时被调用。<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Clock</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="keyword">this</span>.state = &#123;<span class="attr">date</span>: <span class="keyword">new</span> <span class="built_in">Date</span>()&#125;;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentDidMount() &#123;</div><div class="line">    <span class="comment">// runs after the component output has been rendered to the DOM</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  componentWillUnmount() &#123;</div><div class="line">    <span class="comment">// runs after the component has been removed from DOM</span></div><div class="line">  &#125;</div><div class="line"></div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;Hello, world!<span class="xml"><span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span></div><div class="line">        &lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div><div class="line"><span class="regexp">      &lt;/</span>div&gt;</div><div class="line">    );</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这些方法称为”lifecycle hooks”，<code>componentDidMount()</code>方法会在组件被渲染到DOM后执行，在这个方法内设置定时器是很棒的：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">componentDidMount() &#123;</div><div class="line">    <span class="keyword">this</span>.timerID = setInterval(</div><div class="line">      () =&gt; <span class="keyword">this</span>.tick(),</div><div class="line">      <span class="number">1000</span></div><div class="line">    );</div><div class="line">  &#125;</div></pre></td></tr></table></figure></p>
+<p>这里将<code>setInterval()</code>方法返回的 int 值存储在<code>this.timerID</code>中，方便在后面 unmount 的时候，对其使用<code>clearInterval()</code>方法。</p>
+<blockquote>
+<p>While this.props is set up by React itself and this.state has a special meaning, you are free to add additional fields to the class manually if you need to store something that is not used for the visual output.</p>
+<p>If you don’t use something in render(), it shouldn’t be in the state.</p>
+</blockquote>
+<p>在<code>componentWillUnmount()</code>方法中，销毁掉定时器：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">componentWillUnmount() &#123;</div><div class="line">  clearInterval(<span class="keyword">this</span>.timerID);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>最后，我们要实现<code>tick()</code>方法：<br><figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tick() &#123;</div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    date: <span class="keyword">new</span> <span class="built_in">Date</span>()</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>这个方法会调用<code>this.setState()</code>方法，来安排更新组件的state。<br>好，我们现在再来回顾一下刚才发生了什么，以及方法被调用的顺序：</p>
+<ol>
+<li>当<code>&lt;Clock /&gt;</code>元素被传递给<code>React.render()</code>方法时，React 会调用<code>Clock</code>组件的构造函数，由于<code>Clock</code>需要展示当前的时间，所以在<code>Clock</code>的构造函数中，<code>this.state</code>初始化了一个包含当前时间的对象，然后我们对它进行更新；</li>
+<li>React 接着调用<code>Clock</code>组件的<code>render()</code>方法，这使得 React 知道要在屏幕上展示什么东西。接下来 React 会根据<code>Clock</code>的<code>render()</code>方法来更新 DOM；</li>
+<li>当<code>Clock</code>的输出被插入到 DOM 中时，React 会调用<code>componentDidMount()</code>方法，在这个方法内部，<code>Clock</code>向浏览器请求设置一个定时器，每秒调用一次组件中的<code>tick()</code>方法；</li>
+<li>每隔一秒钟，浏览器就会调用<code>tick()</code>方法，在这个方法内部，<code>Clock</code>组件通过调用包含当前时间对象的<code>setState()</code>方法来对 UI 进行更新。多亏了<code>setState()</code>方法，React 才能知道组件的状态已经改变了，这时会再次调用<code>render()</code>方法，来确定需要在屏幕上展示出什么。这次，<code>render()</code> 方法中的<code>this.state.date</code>已经不同了，所以渲染出的结果将会包含更新过的时间，React 会对 DOM 进行相对应的更新；</li>
+<li>如果<code>Clock</code>组件从 DOM 中被移除了，React 会调用<code>componentWillUnmount()</code>方法来将定时器停止。</li>
+</ol>
+<hr>
+<h2 id="正确使用-State"><a href="#正确使用-State" class="headerlink" title="正确使用 State"></a>正确使用 State</h2><p>对于<code>setState()</code>方法，你需要知道以下三件事情：</p>
+<h3 id="不要直接修改-State"><a href="#不要直接修改-State" class="headerlink" title="不要直接修改 State"></a>不要直接修改 State</h3><p>举个例子，下面的代码不会对组件进行重新渲染：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Wrong</span></div><div class="line"><span class="keyword">this</span>.state.comment = <span class="string">'Hello'</span>;</div></pre></td></tr></table></figure>
+<p>正确的方法应该是，使用<code>setState()</code>方法对其进行修改：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Correct</span></div><div class="line"><span class="keyword">this</span>.setState(&#123;<span class="attr">comment</span>: <span class="string">'Hello'</span>&#125;);</div></pre></td></tr></table></figure>
+<p>唯一能够对<code>this.state</code>进行赋值的地方是构造函数，除此之外，都不可以。</p>
+<h3 id="State-的更新有可能是异步的"><a href="#State-的更新有可能是异步的" class="headerlink" title="State 的更新有可能是异步的"></a>State 的更新有可能是异步的</h3><p>出于性能方面的考虑，React 有可能将多个<code>setState()</code>请求整合成单独一次的更新。由于<code>this.props</code>和<code>this.state</code>都可能被异步更新，所以不要依赖它们的值来计算下一个 state。举例来说，下面的代码可能会导致计数器更新失败：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Wrong</span></div><div class="line"><span class="keyword">this</span>.setState(&#123;</div><div class="line">  counter: <span class="keyword">this</span>.state.counter + <span class="keyword">this</span>.props.increment</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>要改正的话，需要用到第二种形式的<code>setState()</code>方法， 这个方法会接收函数作为参数，而不是以对象作为参数。这个<strong>匿名方法</strong>会接收上一个 state 作为第一个参数，将更新进行时的 props 作为第二个参数：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Correct</span></div><div class="line"><span class="keyword">this</span>.setState(<span class="function">(<span class="params">prevState, props</span>) =&gt;</span> (&#123;</div><div class="line">  counter: prevState.counter + props.increment</div><div class="line">&#125;));</div></pre></td></tr></table></figure>
+<p>上面使用了<code>arrow function</code>，其实使用常规的函数也是一样的：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// Correct</span></div><div class="line"><span class="keyword">this</span>.setState(<span class="function"><span class="keyword">function</span>(<span class="params">prevState, props</span>)</span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    counter: prevState.counter + props.increment</div><div class="line">  &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<h3 id="State-Updates-are-Merged"><a href="#State-Updates-are-Merged" class="headerlink" title="State Updates are Merged"></a>State Updates are Merged</h3><p>当你调用<code>setState()</code>方法的时候，React 会将你提供的对象并入（merge into）当前的状态中。举个例子，你的 state 可能会包含多个独立的变量：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">constructor</span>(props) &#123;</div><div class="line">  <span class="keyword">super</span>(props);</div><div class="line">  <span class="keyword">this</span>.state = &#123;</div><div class="line">    posts: [],</div><div class="line">    comments: []</div><div class="line">  &#125;;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后，你可以分开调用<code>setState()</code>方法对它们单独进行更新：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">componentDidMount() &#123;</div><div class="line">  fetchPosts().then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      posts: response.posts</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">  </div><div class="line">  fetchComments().then(<span class="function"><span class="params">response</span> =&gt;</span> &#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      comments: response.comments</div><div class="line">    &#125;);</div><div class="line">  &#125;);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>The merging is shallow，所以<code>this.setState({comments})</code>会保持<code>this.state.posts</code>的完整，并且整个替换掉<code>this.state.comments</code>。</p>
+<hr>
+<h2 id="The-Data-Flows-Down"><a href="#The-Data-Flows-Down" class="headerlink" title="The Data Flows Down"></a>The Data Flows Down</h2><p>不管是父级组件还是子级组件，都不能知道一个特定的组件到底是有状态的还是无状态的，它们也不应该关心它是定义成一个函数还是一个类。这就是为什么 state 经常被称作是<code>本地的</code>或者是<code>被封装的</code>，除了自己，别的组件是不能对其进行访问的。组件可以选择将自己的 state 作为 props 传递给它的子级组件：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;h2&gt;It is &#123;<span class="keyword">this</span>.state.date.toLocaleTimeString()&#125;.&lt;<span class="regexp">/h2&gt;</span></div></pre></td></tr></table></figure>
+<p>对于用户定义的组件，也是可以的：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;FormattedDate date=&#123;<span class="keyword">this</span>.state.date&#125; /&gt;</div></pre></td></tr></table></figure>
+<p><code>FormattedDate</code>组件将会接收到一个包含在其 props 中的<code>date</code>对象，它不知道这个对象是来自<code>Clock</code>的 state，还是<code>Clock</code>的 props，或者是硬编码进去的：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">FormattedDate</span>(<span class="params">props</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="xml"><span class="tag">&lt;<span class="name">h2</span>&gt;</span>It is &#123;props.date.toLocaleTimeString&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这通常被称作“自顶向下的”或“单向的”数据流，任何的 state 都永远是为某些特定的 component 所有的，并且任何的从那个 state 处得到的数据或者 UI 只能影响它们“下面的”组件。</p>
+<blockquote>
+<p>如果你把一个组件树想象成由 props 构成的瀑布的花，每个组件的 state 就像一个额外的水源，它在某个任意的点上汇入，但是也将“顺流而下”。</p>
+</blockquote>
+<p>为了展示所有的组件都是真正独立的，我们可以创建一个<code>App</code>组件来渲染3个<code>&lt;Clock /&gt;</code>：</p>
+<figure class="highlight jsx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">App</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;Clock /&gt;</div><div class="line">      &lt;Clock /&gt;</div><div class="line">      &lt;Clock /&gt;</div><div class="line">    &lt;<span class="regexp">/div&gt;</span></div><div class="line"><span class="regexp">  );</span></div><div class="line"><span class="regexp">&#125;</span></div><div class="line"><span class="regexp"></span></div><div class="line"><span class="regexp">ReactDOM.render(</span></div><div class="line"><span class="regexp">  &lt;App /</span>&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">);</div></pre></td></tr></table></figure>
+<p>这样，每个<code>Clock</code>都会单独地设置自己的定时器并且更新。</p>
+<p>在 React apps 中，考虑一个组件是有状态的还是无状态的，涉及到一个实现的细节，即这个组件是否会<code>随着时间而发生变化</code>。你既可以在有状态的组件中使用无状态的组件，也可以在无状态的组件中，使用有状态的组件，这都是可以的。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/30/Git-分支管理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Louis Melo">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Louis - 东篱之下">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/30/Git-分支管理/" itemprop="url">Git-分支管理</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-30T20:36:18+08:00">
+                2018-01-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Git-分支管理"><a href="#Git-分支管理" class="headerlink" title="Git 分支管理"></a>Git 分支管理</h1><p>分支就是科幻电影里面的平行宇宙，当你正在电脑前努力学习Git的时候，另一个你正在另一个平行宇宙里努力学习SVN。</p>
+<p>如果两个平行宇宙互不干扰，那对现在的你也没啥影响。不过，在某个时间点，两个平行宇宙合并了，结果，你既学会了Git又学会了SVN！<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384908633976bb65b57548e64bf9be7253aebebd49af000/0" alt="分支管理"><br>分支在实际中有什么用呢？假设你准备开发一个新功能，但是需要两周才能完成，第一周你写了50%的代码，如果立刻提交，由于代码还没写完，不完整的代码库会导致别人不能干活了。如果等代码全部写完再一次提交，又存在丢失每天进度的巨大风险。</p>
+<p>现在有了分支，就不用怕了。你创建了一个属于你自己的分支，别人看不到，还继续在原来的分支上正常工作，而你在自己的分支上干活，想提交就提交，直到开发完毕后，再一次性合并到原来的分支上，这样，既<code>安全</code>，又<code>不影响别人工作</code>。</p>
+<p>其他版本控制系统如SVN等都有分支管理，但是用过之后你会发现，这些版本控制系统创建和切换分支比蜗牛还慢，简直让人无法忍受，结果分支功能成了摆设，大家都不去用。</p>
+<p>但Git的分支是与众不同的，无论创建、切换和删除分支，Git在1秒钟之内就能完成！无论你的版本库是1个文件还是1万个文件。</p>
+<h2 id="创建与合并分支"><a href="#创建与合并分支" class="headerlink" title="创建与合并分支"></a>创建与合并分支</h2><hr>
+<p>在每次提交后，Git都把各个版本串成一条时间线，这条时间线就是一个分支。截止到目前，只有一条时间线，在Git里，这个分支叫主分支，即<code>master</code>分支。<code>HEAD</code>严格来说不是指向提交，而是指向<code>master</code>，<code>master</code>才是指向提交的，所以，<code>HEAD</code>指向的就是当前分支。</p>
+<p>一开始的时候，<code>master</code>分支是一条线，Git用<code>master</code>指向最新的提交，再用<code>HEAD</code>指向<code>master</code>，就能确定当前分支，以及当前分支的提交点：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/0013849087937492135fbf4bbd24dfcbc18349a8a59d36d000/0" alt="master"><br>每次提交，<code>master</code>分支都会向前移动一步，这样，随着你不断提交，<code>master</code>分支的线也越来越长。</p>
+<p>当我们创建新的分支，例如<code>dev</code>时，Git新建了一个指针叫<code>dev</code>，指向m<code>aster</code>相同的提交，再把<code>HEAD</code>指向<code>dev</code>，就表示当前分支在<code>dev</code>上：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384908811773187a597e2d844eefb11f5cf5d56135ca000/0" alt="dev"><br>你看，Git创建一个分支很快，因为除了增加一个dev指针，改改HEAD的指向，工作区的文件都没有任何变化！</p>
+<p>不过，从现在开始，对工作区的修改和提交就是针对dev分支了，比如新提交一次后，dev指针往前移动一步，而master指针不变：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/0013849088235627813efe7649b4f008900e5365bb72323000/0" alt="new dev"><br>假如我们在dev上的工作完成了，就可以把dev合并到master上。Git怎么合并呢？最简单的方法，就是直接把master指向dev的当前提交，就完成了合并：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/00138490883510324231a837e5d4aee844d3e4692ba50f5000/0" alt="合并"><br>所以Git合并分支也很快！就改改指针，工作区内容也不变！</p>
+<p>合并完分支后，甚至可以删除dev分支。删除dev分支就是把dev指针给删掉，删掉后，我们就剩下了一条master分支：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384908867187c83ca970bf0f46efa19badad99c40235000/0" alt="删除"></p>
+<p>好了，看懂了这些基本的流程，我们就开始实战吧：</p>
+<p>首先，我们创建一个名为<code>dev</code>的分支，并切换到<code>dev</code>分支上去：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b dev</div><div class="line">Switched to a new branch <span class="string">'dev'</span></div></pre></td></tr></table></figure></p>
+<p>这里的<code>git checkout -b dev</code>命令表示的是“创建dev分支并切换到dev分支”，这其实相当于两条命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git branch dev</div><div class="line">$ git checkout dev</div><div class="line">Switched to branch <span class="string">'dev'</span></div></pre></td></tr></table></figure></p>
+<p>然后，使用<code>git branch</code>查看分支情况：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git branch</div><div class="line">* dev</div><div class="line">  master</div></pre></td></tr></table></figure></p>
+<p>这条命令会返回所有的分支，并且在当前的分支上，会有一颗<code>*</code>号。<br>现在，我们就可以在<code>dev</code>分支上进行正常的提交了，比如我们再在<code>readme.txt</code>文件里加一行内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Creating a new branch is quick.</div></pre></td></tr></table></figure></p>
+<p>将这个改动提交到版本库中：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'add new branch'</span></div><div class="line">[dev d19f6e8] add new branch</div><div class="line"> 1 file changed, 2 insertions(+)</div></pre></td></tr></table></figure></p>
+<p>OK，现在假设我们在<code>dev</code>分支上的工作已经完成了， 现在我们回到<code>master</code>分支上来：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git checkout master</div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">Your branch is up-to-date with <span class="string">'origin/master'</span>.</div></pre></td></tr></table></figure></p>
+<p>切换回<code>master</code>分支后，我们可以看到，原先在<code>dev</code>分支上修改过的<code>readme.txt</code>文件并没有产生变化，还是那四句话：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517318302/Screen_Shot_2018-01-30_at_9.17.54_PM_ib0lf8.png" alt="切换回master"><br>此时的指针状态应该是这样的：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384908892295909f96758654469cad60dc50edfa9abd000/0" alt="当前指针"><br>现在，我们需要把<code>dev</code>的工作成果合并到<code>master</code>分支上，我们需要<code>git merge</code>命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ git merge dev</div><div class="line">Updating a81ac4f..d19f6e8</div><div class="line">Fast-forward</div><div class="line"> readme.txt | 2 ++</div><div class="line"> 1 file changed, 2 insertions(+)</div></pre></td></tr></table></figure></p>
+<p><code>git merge</code>命令用于将指定的分支（dev）合并到当前分支（master）上来，现在我们再看一下<code>readme.txt</code>文件的内容，发现多了一行内容了，已经和<code>dev</code>分支上一模一样了。<br>注意上面返回的信息中的<code>Fast-forward</code>消息，这意味着这次的合并模式是<code>快进模式</code>，就是将<code>master</code>的指针向前移动到了<code>dev</code>的指针上，这样的合并速度就非常快，当然不是每次都是<code>快进模式</code>的合并，还有其他的合并方式。<br>合并完成后，假设我们也不再需要<code>dev</code>分支了，我们可以执行命令，将其删除：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git branch -d dev</div><div class="line">Deleted branch dev (was d19f6e8).</div></pre></td></tr></table></figure></p>
+<p>删除后，我们再查看一下版本库中分支的情况：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git branch</div><div class="line">* master</div></pre></td></tr></table></figure></p>
+<p>现在，我们就只剩<code>master</code>这一个分支了。</p>
+<h2 id="解决冲突"><a href="#解决冲突" class="headerlink" title="解决冲突"></a>解决冲突</h2><hr>
+<p>人生不如意之事十之八九，合并分支往往也不是一帆风顺的。</p>
+<p>准备新的<code>feature1</code>分支，继续我们的新分支开发：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b feature1</div><div class="line">Switched to a new branch <span class="string">'feature1'</span></div></pre></td></tr></table></figure></p>
+<p>修改<code>readme.txt</code>文件的最后一行内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Creating a new branch is quick AND simple.</div></pre></td></tr></table></figure></p>
+<p>现在，提交这个分支的修改：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'AND simple'</span></div><div class="line">[feature1 e412abc] AND simple</div><div class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</div></pre></td></tr></table></figure></p>
+<p>好的，完成了<code>feature1</code>上的修改，我们现在回到<code>master</code>分支上来：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git checkout master</div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">Your branch is ahead of <span class="string">'origin/master'</span> by 1 commit.</div><div class="line">  (use <span class="string">"git push"</span> to publish your <span class="built_in">local</span> commits)</div></pre></td></tr></table></figure></p>
+<p>我们再次修改一下<code>readme.txt</code>文件，将最后一行改为：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Creating a new branch is quick &amp; simple.</div></pre></td></tr></table></figure></p>
+<p>提交修改：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'&amp; simple'</span></div><div class="line">[master 54d63e2] &amp; simple</div><div class="line"> 1 file changed, 1 insertion(+), 1 deletion(-)</div></pre></td></tr></table></figure></p>
+<p>现在，我们可以思考一下版本的指针状态，现在<code>mater</code>和<code>feature1</code>分支都有了新的提交，所以，应该是这样的：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384909115478645b93e2b5ae4dc78da049a0d1704a41000/0" alt="分支状态"><br>这种情况下，Git无法执行“快速合并”，只能试图把各自的修改合并起来，但这种合并就可能会有冲突，我们试试看：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git merge feature1</div><div class="line">Auto-merging readme.txt</div><div class="line">CONFLICT (content): Merge conflict <span class="keyword">in</span> readme.txt</div><div class="line">Automatic merge failed; fix conflicts and <span class="keyword">then</span> commit the result.</div></pre></td></tr></table></figure></p>
+<p>从返回的信息可以看出来，Git告诉我们在合并时，<code>readme.txt</code>文件存在冲突，需要我们解决了冲突之后再提交结果。我们现在用<code>git status</code>看看：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">$ git status</div><div class="line">On branch master</div><div class="line">Your branch is ahead of <span class="string">'origin/master'</span> by 2 commits.</div><div class="line">  (use <span class="string">"git push"</span> to publish your <span class="built_in">local</span> commits)</div><div class="line">You have unmerged paths.</div><div class="line">  (fix conflicts and run <span class="string">"git commit"</span>)</div><div class="line">  (use <span class="string">"git merge --abort"</span> to abort the merge)</div><div class="line"></div><div class="line">Unmerged paths:</div><div class="line">  (use <span class="string">"git add &lt;file&gt;..."</span> to mark resolution)</div><div class="line"></div><div class="line">	both modified:   readme.txt</div><div class="line"></div><div class="line">no changes added to commit (use <span class="string">"git add"</span> and/or <span class="string">"git commit -a"</span>)</div></pre></td></tr></table></figure></p>
+<p>我们现在再看看<code>readme.txt</code>里面的内容：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517321020/Screen_Shot_2018-01-30_at_10.03.16_PM_xv7szx.png" alt="readme.txt"><br>卧槽，居然变成这样了，要怎么办呢？<br>可以看到，Git使用了<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>，<code>=======</code>，<code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>标记了不同分支的内容，我们现在将其改成如下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Creating a new branch is quick and simple.</div></pre></td></tr></table></figure></p>
+<p>再执行提交操作：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'and simple'</span></div><div class="line">[master f31c8e4] and simple</div></pre></td></tr></table></figure></p>
+<p>现在，<code>master</code>分支和<code>feature1</code>分支变成了下面的样子了：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/00138490913052149c4b2cd9702422aa387ac024943921b000/0" alt="分支状态"><br>用带参数的<code>git log</code>命令，也可以看到合并的情况：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> --graph --pretty=oneline --abbrev-commit</div><div class="line">*   f31c8e4 (HEAD -&gt; master) and simple</div><div class="line">|\</div><div class="line">| * e412abc (feature1) AND simple</div><div class="line">* | 54d63e2 &amp; simple</div><div class="line">|/</div><div class="line">* d19f6e8 add new branch</div></pre></td></tr></table></figure></p>
+<p>最后，删除<code>feature1</code>分支：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git branch -d feature1</div><div class="line">Deleted branch feature1 (was e412abc).</div></pre></td></tr></table></figure></p>
+<h2 id="分支管理策略"><a href="#分支管理策略" class="headerlink" title="分支管理策略"></a>分支管理策略</h2><hr>
+<p>通常，合并分支时，如果可能，Git会用<code>Fast forward</code>模式，但这种模式下，删除分支后，会丢掉分支信息。</p>
+<p>如果要强制禁用<code>Fast forward</code>模式，Git就会在merge时生成一个新的commit，这样，从分支历史上就可以看出分支信息。</p>
+<p>下面我们实战一下<code>--no-ff</code>方式的<code>git merge</code>：</p>
+<p>首先，仍然创建并切换<code>dev</code>分支：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ git checkout -b dev</div><div class="line">Switched to a new branch &apos;dev&apos;</div></pre></td></tr></table></figure></p>
+<p>对<code>readme.txt</code>修改后，进行提交：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ git add readme.txt</div><div class="line">$ git commit -m <span class="string">'add merge'</span></div><div class="line">[dev 5b54fb4] add merge</div><div class="line"> 1 file changed, 1 insertion(+)</div></pre></td></tr></table></figure></p>
+<p>然后，我们切回<code>master</code>并且准备合并<code>dev</code>分支，这里要使用<code>--no-ff</code>参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ git checkout master</div><div class="line">Switched to branch <span class="string">'master'</span></div><div class="line">Your branch is ahead of <span class="string">'origin/master'</span> by 4 commits.</div><div class="line">  (use <span class="string">"git push"</span> to publish your <span class="built_in">local</span> commits)</div><div class="line">$ git merge --no-ff -m <span class="string">'merge with no-ff'</span> dev</div><div class="line">Merge made by the <span class="string">'recursive'</span> strategy.</div><div class="line"> readme.txt | 1 +</div><div class="line"> 1 file changed, 1 insertion(+)</div></pre></td></tr></table></figure></p>
+<p>再次使用<code>git log</code>命令，查看一下分支的情况：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">$ git <span class="built_in">log</span> --graph --pretty=oneline --abbrev-commit</div><div class="line">*   097a662 (HEAD -&gt; master) merge with no-ff</div><div class="line">|\</div><div class="line">| * 5b54fb4 (dev) add merge</div><div class="line">|/</div><div class="line">*   f31c8e4 and simple</div><div class="line">...</div></pre></td></tr></table></figure></p>
+<p>可以看到，不使用<code>Fast forward</code>模式的情况下，分支情况是这样的：<br><img src="https://cdn.liaoxuefeng.com/cdn/files/attachments/001384909222841acf964ec9e6a4629a35a7a30588281bb000/0" alt="分支情况"></p>
+<h3 id="分支策略"><a href="#分支策略" class="headerlink" title="分支策略"></a>分支策略</h3><p>分支的功能很强大，所以我们要遵循以下的几个原则来进行分支管理：</p>
+<ol>
+<li><code>master</code>分支应该只用来进行版本的发布，平时不能在上面工作</li>
+<li>干活都应该在<code>dev</code>上面，当需要发布稳定版本的时候，将<code>dev</code>合并到<code>master</code>上去</li>
+<li>每个开发的小伙伴都应该从<code>dev</code>上分支出自己的版本，然后时不时地与<code>dev</code>进行合并就行了</li>
+</ol>
+<p>## </p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2018/01/29/Git-远程仓库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -273,6 +669,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -317,6 +735,14 @@
 <p>如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。</p>
 <p>确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。</p>
 <h2 id="添加远程库"><a href="#添加远程库" class="headerlink" title="添加远程库"></a>添加远程库</h2><hr>
+<p>现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。</p>
+<p>首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517312422/Screen_Shot_2018-01-30_at_7.39.10_PM_li1bdg.png" alt="创建新仓库"><br>在Repository name填入<code>Learngit</code>，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517312560/Screen_Shot_2018-01-30_at_7.42.07_PM_pbg5mf.png" alt="新仓库"><br>目前，在GitHub上的这个<code>Learngit</code>仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。</p>
+<p>现在，我们根据GitHub的提示，在本地的<code>Learngit</code>仓库下运行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin git@github.com:LouisMelo/Learngit.git</div></pre></td></tr></table></figure></p>
+<p>添加后，远程库的名字就是<code>origin</code>，这是Git默认的叫法，也可以改成别的，但是<code>origin</code>这个名字一看就知道是远程库。<br>下面，就可以把本地库的所有内容推送到远程库上：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git push -u origin master</div><div class="line">Counting objects: 27, <span class="keyword">done</span>.</div><div class="line">Delta compression using up to 8 threads.</div><div class="line">Compressing objects: 100% (22/22), <span class="keyword">done</span>.</div><div class="line">Writing objects: 100% (27/27), 2.26 KiB | 0 bytes/s, <span class="keyword">done</span>.</div><div class="line">Total 27 (delta 8), reused 0 (delta 0)</div><div class="line">remote: Resolving deltas: 100% (8/8), <span class="keyword">done</span>.</div><div class="line">To github.com:LouisMelo/Learngit.git</div><div class="line"> * [new branch]      master -&gt; master</div><div class="line">Branch master <span class="built_in">set</span> up to track remote branch master from origin.</div></pre></td></tr></table></figure></p>
+<p>把本地库的内容推送到远程，用<code>git push</code>命令，实际上是把当前分支master推送到远程。</p>
+<p>由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
+<p>推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517315199/Screen_Shot_2018-01-30_at_8.26.11_PM_u1rcxt.png" alt="远程仓库"><br>好了，从现在开始，如果本地有了新的提交，你就可以通过下面的命令将它推送到Github了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div></pre></td></tr></table></figure></p>
+<p>分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！</p>
 
           
         
@@ -406,6 +832,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -611,6 +1059,28 @@
             
           </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
           
 
           
@@ -1674,303 +2144,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/10/15/ReactJS-Crash/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/15/ReactJS-Crash/" itemprop="url">ReactJS Crash</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T22:50:35+08:00">
-                2017-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="What-You’ll-Learn"><a href="#What-You’ll-Learn" class="headerlink" title="What You’ll Learn"></a>What You’ll Learn</h2><ul>
-<li>How to create a React App</li>
-<li>How to create component</li>
-<li>How to manage state and properties</li>
-<li>How to handle events</li>
-<li>How to work with forms and input</li>
-<li>How to work with JSX</li>
-<li>How to use lifecircle method</li>
-<li>How to fetch data from API</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://louismelo.github.io/2017/10/15/Node-js-Web开发（三）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Louis Melo">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Louis - 东篱之下">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/15/Node-js-Web开发（三）/" itemprop="url">Node.js Web开发（三）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T10:20:44+08:00">
-                2017-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/开发/" itemprop="url" rel="index">
-                    <span itemprop="name">开发</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h2><p>WebSocket是HTML5新增的协议，它的目的是在浏览器和服务器之间建立一个不受限的双向通信的通道，比如说，服务器可以在任意时刻发送消息给浏览器。</p>
-<p>初次接触 WebSocket 的人，都会问同样的问题：我们已经有了 HTTP 协议，为什么还需要另一个协议？它能带来什么好处？<br>答案很简单，因为 HTTP 协议有一个缺陷： <strong>通信只能由客户端发起</strong>。</p>
-<p>WebSocket使得客户端和服务器之间的数据交换变得更加简单，允许服务端主动向客户端推送数据。在WebSocket API中，浏览器和服务器只需要完成一次握手，两者之间就直接可以创建持久性的连接，并进行双向数据传输。</p>
-<p>现在，很多网站为了实现推送技术，所用的技术都是轮询。轮询是在特定的的时间间隔（如每1秒），由浏览器对服务器发出HTTP请求，然后由服务器返回最新的数据给客户端的浏览器。这种传统的模式带来很明显的缺点，即浏览器需要不断的向服务器发出请求，然而HTTP请求可能包含较长的头部，其中真正有效的数据可能只是很小的一部分，显然这样会浪费很多的带宽等资源。<br>而比较新的技术去做轮询的效果是Comet。这种技术虽然可以双向通信，但依然需要反复发出请求。而且在Comet中，普遍采用的长链接，也会消耗服务器资源。<br>在这种情况下，HTML5定义了WebSocket协议，能更好的节省服务器资源和带宽，并且能够更实时地进行通讯。</p>
-<p><a href="https://socket.io/" target="_blank" rel="external">socket.io</a></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2024,7 +2197,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -2035,7 +2208,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

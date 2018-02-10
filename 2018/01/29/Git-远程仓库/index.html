@@ -77,7 +77,10 @@
 <meta property="og:description" content="Git 远程仓库Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。 实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517236361/Screen_Shot_2018-01-29_at_10.28.11_PM_nk5nbs.png">
-<meta property="og:updated_time" content="2018-01-29T14:34:50.000Z">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517312422/Screen_Shot_2018-01-30_at_7.39.10_PM_li1bdg.png">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517312560/Screen_Shot_2018-01-30_at_7.42.07_PM_pbg5mf.png">
+<meta property="og:image" content="http://res.cloudinary.com/louismelo/image/upload/v1517315199/Screen_Shot_2018-01-30_at_8.26.11_PM_u1rcxt.png">
+<meta property="og:updated_time" content="2018-01-30T13:03:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Git-远程仓库">
 <meta name="twitter:description" content="Git 远程仓库Git是分布式版本控制系统，同一个Git仓库，可以分布到不同的机器上。怎么分布呢？最早，肯定只有一台机器有一个原始版本库，此后，别的机器可以“克隆”这个原始版本库，而且每台机器的版本库其实都是一样的，并没有主次之分。 实际情况往往是这样，找一台电脑充当服务器的角色，每天24小时开机，其他每个人都从这个“服务器”仓库克隆一份到自己的电脑上，并且各自把各自的提交推送到服务器仓库里，也从">
@@ -274,6 +277,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -315,6 +340,14 @@
 <p>如果你不想让别人看到Git库，有两个办法，一个是交点保护费，让GitHub把公开的仓库变成私有的，这样别人就看不见了（不可读更不可写）。另一个办法是自己动手，搭一个Git服务器，因为是你自己的Git服务器，所以别人也是看不见的。这个方法我们后面会讲到的，相当简单，公司内部开发必备。</p>
 <p>确保你拥有一个GitHub账号后，我们就即将开始远程仓库的学习。</p>
 <h2 id="添加远程库"><a href="#添加远程库" class="headerlink" title="添加远程库"></a>添加远程库</h2><hr>
+<p>现在的情景是，你已经在本地创建了一个Git仓库后，又想在GitHub创建一个Git仓库，并且让这两个仓库进行远程同步，这样，GitHub上的仓库既可以作为备份，又可以让其他人通过该仓库来协作，真是一举多得。</p>
+<p>首先，登陆GitHub，然后，在右上角找到“Create a new repo”按钮，创建一个新的仓库：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517312422/Screen_Shot_2018-01-30_at_7.39.10_PM_li1bdg.png" alt="创建新仓库"><br>在Repository name填入<code>Learngit</code>，其他保持默认设置，点击“Create repository”按钮，就成功地创建了一个新的Git仓库：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517312560/Screen_Shot_2018-01-30_at_7.42.07_PM_pbg5mf.png" alt="新仓库"><br>目前，在GitHub上的这个<code>Learngit</code>仓库还是空的，GitHub告诉我们，可以从这个仓库克隆出新的仓库，也可以把一个已有的本地仓库与之关联，然后，把本地仓库的内容推送到GitHub仓库。</p>
+<p>现在，我们根据GitHub的提示，在本地的<code>Learngit</code>仓库下运行命令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git remote add origin git@github.com:LouisMelo/Learngit.git</div></pre></td></tr></table></figure></p>
+<p>添加后，远程库的名字就是<code>origin</code>，这是Git默认的叫法，也可以改成别的，但是<code>origin</code>这个名字一看就知道是远程库。<br>下面，就可以把本地库的所有内容推送到远程库上：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ git push -u origin master</div><div class="line">Counting objects: 27, <span class="keyword">done</span>.</div><div class="line">Delta compression using up to 8 threads.</div><div class="line">Compressing objects: 100% (22/22), <span class="keyword">done</span>.</div><div class="line">Writing objects: 100% (27/27), 2.26 KiB | 0 bytes/s, <span class="keyword">done</span>.</div><div class="line">Total 27 (delta 8), reused 0 (delta 0)</div><div class="line">remote: Resolving deltas: 100% (8/8), <span class="keyword">done</span>.</div><div class="line">To github.com:LouisMelo/Learngit.git</div><div class="line"> * [new branch]      master -&gt; master</div><div class="line">Branch master <span class="built_in">set</span> up to track remote branch master from origin.</div></pre></td></tr></table></figure></p>
+<p>把本地库的内容推送到远程，用<code>git push</code>命令，实际上是把当前分支master推送到远程。</p>
+<p>由于远程库是空的，我们第一次推送<code>master</code>分支时，加上了<code>-u</code>参数，Git不但会把本地的<code>master</code>分支内容推送的远程新的<code>master</code>分支，还会把本地的<code>master</code>分支和远程的<code>master</code>分支关联起来，在以后的推送或者拉取时就可以简化命令。</p>
+<p>推送成功后，可以立刻在GitHub页面中看到远程库的内容已经和本地一模一样：<br><img src="http://res.cloudinary.com/louismelo/image/upload/v1517315199/Screen_Shot_2018-01-30_at_8.26.11_PM_u1rcxt.png" alt="远程仓库"><br>好了，从现在开始，如果本地有了新的提交，你就可以通过下面的命令将它推送到Github了：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ git push origin master</div></pre></td></tr></table></figure></p>
+<p>分布式版本系统的最大好处之一是在本地工作完全不需要考虑远程库的存在，也就是有没有联网都可以正常工作，而SVN在没有联网的时候是拒绝干活的！当有网络的时候，再把本地提交推送一下就完成了同步，真是太方便了！</p>
 
       
     </div>
@@ -348,6 +381,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/Git-分支管理/" rel="prev" title="Git-分支管理">
+                Git-分支管理 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -427,7 +464,7 @@
             
               <a href="/archives/">
             
-                <span class="site-state-item-count">17</span>
+                <span class="site-state-item-count">19</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -438,7 +475,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
